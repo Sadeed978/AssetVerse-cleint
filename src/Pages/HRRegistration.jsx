@@ -2,15 +2,15 @@ import React, { use } from 'react';
 import { useForm } from 'react-hook-form';
 import AuthContext from '../contexts/AuthContexts';
 const HRRegistration = () => {
-    const {setUser ,createUser} = use(AuthContext);
+    const {setUser ,createUser,} = use(AuthContext);
     const { register, handleSubmit } = useForm();
     const handleRegistration = (data) => {
         
         createUser(data.email, data.password)
         .then(result => {
-            const user = result.user;
-            console.log(user);
-            setUser(user);
+            const users = result.user;
+            console.log(users);
+            setUser(users);
             const profile = {
                 displayName: data.name,
                 email: data.email,
@@ -18,11 +18,8 @@ const HRRegistration = () => {
                 companyLogo: data.companyLogo,
                 password: data.password,
             };
-            fetch('',{
-                method: 'POST',
-                headers:{
-                  'content-type':'application/json'
-                },
+            fetch('http://localhost:3000/users', {
+                method:'POST',
                 body:JSON.stringify(profile)
               })
                 .then(res => res.json())

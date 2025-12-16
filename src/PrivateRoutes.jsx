@@ -1,10 +1,11 @@
-import React, { use } from 'react';
+import React from 'react';
 import AuthContext from './contexts/AuthContexts';
 import { Navigate, useLocation } from 'react-router';
+import { use } from 'react';
 
-const privateRoute = ({children}) => {
-    const location = useLocation();
+const PrivateRoute = ({children}) => {
     const {user, loading}= use(AuthContext);
+    const location=useLocation();
     if(loading){
         return <span className="loading loading-ball loading-lg"></span>;
     }
@@ -17,4 +18,4 @@ const privateRoute = ({children}) => {
     
 };
 
-export default privateRoute;
+export default PrivateRoute;
