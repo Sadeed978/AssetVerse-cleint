@@ -5,6 +5,14 @@ import Home from "./Pages/Home";
 import HRRegistration from "./Pages/HRRegistration";
 import EmployeeRegistration from "./Pages/EmployeeRegistration";
 import Login from "./Pages/Login";
+import AssetList from "./Pages/AssetList";
+import AddAssert from "./Pages/AddAssert";
+import EmployeeList from "./Pages/EmployeeList";
+import Requirement from "./Pages/Requirement";
+import PrivateRoute from "./PrivateRoute/PrivateRoutes";
+import MyAssert from "./Pages/Employee/MyAssert";
+import MyTeam from "./Pages/Employee/MyTeam";
+import RequestAsset from "./Pages/Employee/RequestAsset";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -27,6 +35,37 @@ export const router = createBrowserRouter([
         path:"/Login",
         Component:Login,
       },
+      {
+        path:'/AssetList',
+        element:<PrivateRoute><AssetList></AssetList></PrivateRoute>
+      },
+      {
+        path:'/AddAssert',
+        element:<PrivateRoute><AddAssert></AddAssert></PrivateRoute>
+    
+      },
+      {
+        path:'/EmployeeList',
+        element:<PrivateRoute><EmployeeList></EmployeeList></PrivateRoute>
+    
+      },
+      {
+        path:'/Requirement',
+        element:<PrivateRoute><Requirement></Requirement></PrivateRoute>
+    
+      },
+      {
+        path:'/MyAssets',
+        element:<PrivateRoute><MyAssert></MyAssert></PrivateRoute>
+      },
+      {
+        path:'/myteam',
+        element:<PrivateRoute><MyTeam></MyTeam></PrivateRoute>
+      },
+      {
+        path:'/RequestAsset',
+        element:<PrivateRoute><RequestAsset></RequestAsset></PrivateRoute>
+      }
     ]
   },
 ]);

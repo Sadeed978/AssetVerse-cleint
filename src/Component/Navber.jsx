@@ -4,8 +4,9 @@ import { FaRegUserCircle } from 'react-icons/fa';
 import { use } from 'react';
 import AuthContext from '../contexts/AuthContexts';
 import Logo from './Logo';
+import { NavLink } from 'react-router';
 const Navber = () => {
-    const { setUser,user, LogingOut, } = use(AuthContext);
+    const { setUser, user, LogingOut, } = use(AuthContext);
     const link = (<>
         <li><Link to="/">Home</Link></li>
         <li><Link to="/HRRegister">Registration As HR</Link></li>
@@ -31,7 +32,7 @@ const Navber = () => {
                         <ul
                             tabIndex="-1"
                             className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-                           {link}
+                            {link}
                         </ul>
                     </div>
                     <a className="btn btn-ghost text-xl"><Logo></Logo></a>
@@ -42,36 +43,48 @@ const Navber = () => {
                     </ul>
                 </div>
                 <div className="navbar-end">
-                <div className="navbar-end">
-                    { user ? (
+                    <div className="navbar-end">
+                        {user ? (
 
-                        <div className='flex item -end gap-3'>
-                            
-                               
+                            <div className='flex item -end gap-3'>
+
+
                                 <div className="dropdown dropdown-start">
                                     <div tabIndex={0} role="button" ><div>
-                                    { user.photoURL ? (
-                                    <img
-                                        src={ user.photoURL}
-                                        alt={ user.displayName || 'User'}
-                                        className='w-10 h-10 rounded-full'></img>
-                                ) : (
-                                    <FaRegUserCircle className='w-10 h-10'></FaRegUserCircle>
-                                )}
-                                        </div></div>
+                                        {user.photoURL ? (
+                                            <img
+                                                src={user.photoURL}
+                                                alt={user.displayName || 'User'}
+                                                className='w-10 h-10 rounded-full'></img>
+                                        ) : (
+                                            <FaRegUserCircle className='w-10 h-10'></FaRegUserCircle>
+                                        )}
+                                    </div></div>
                                     <ul tabIndex="-1" className="dropdown-content menu bg-base-100  z-1 w-52 p-2 shadow-sm">
-                                       
+                                       {user.role === 'hr' && <> 
+                                        <li><NavLink to='/AssetList'> Asset List</NavLink></li>
+                                        <li> <NavLink> Profile</NavLink></li>
+                                        <li> <NavLink to='/AddAssert'> Add Asset</NavLink> </li>
+                                        <li> <NavLink to='/Requirement'> All Requireme</NavLink></li>
+                                        <li> <NavLink to='/EmployeeList'> Employee List</NavLink></li>
+                                        </>}
+                                        {user.role === 'employee' && <>
+                                        <li><NavLink to='/MyAssets'> My Assets</NavLink></li>
+                                        <li> <NavLink> Profile</NavLink></li>
+                                        <li> <NavLink to='/RequestAsset'> Request Asset</NavLink> </li>
+                                        <li><NavLink to='/ myteam'>My Team</NavLink></li>
+                                        </>}
                                     </ul>
                                 </div>
-    
-                
-                            <button onClick={handleLogOut} className='btn btn-sm btn-outline btn-warning'>Log out</button>
-                        </div>) : (
-                        <Link to='/Login' className="btn btn-outline text-blue-600">Login</Link>)}
 
 
+                                <button onClick={handleLogOut} className='btn btn-sm btn-outline btn-warning'>Log out</button>
+                            </div>) : (
+                            <Link to='/Login' className="btn btn-outline text-blue-600">Login</Link>)}
+
+
+                    </div>
                 </div>
-            </div>
             </div>
         </div>
     );
