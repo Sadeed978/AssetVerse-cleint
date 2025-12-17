@@ -4,6 +4,7 @@ import ErrorPage from "./Pages/ErrorPage";
 import Home from "./Pages/Home";
 import HRRegistration from "./Pages/HRRegistration";
 import EmployeeRegistration from "./Pages/EmployeeRegistration";
+import Login from "./Pages/Login";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -21,6 +22,10 @@ export const router = createBrowserRouter([
       {
         path:"/EmployeeRegister",
         Component:EmployeeRegistration,
+      },
+      {
+        path:"/Login",
+        Component:Login,
       },
     ]
   },
