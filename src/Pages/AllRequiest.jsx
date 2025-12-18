@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Requirement = () => {
+const AllRequiest = () => {
     return (
         <div>
             
@@ -8,4 +8,4 @@ const Requirement = () => {
     );
 };
 
-export default Requirement;
+export default AllRequiest;

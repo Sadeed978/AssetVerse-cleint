@@ -18,7 +18,8 @@ const AddAssert = () => {
         }
      },[user] );
     const onSubmit = data => {
-         
+        data.companyName=companyName;
+        console.log(data);
         fetch('http://localhost:3000/assets', {
             method: 'POST',
             headers: {
@@ -108,7 +109,7 @@ const AddAssert = () => {
                                 <span className="label-text w-40">Company Name</span>
                                 <input
                                     type="text"
-                                    {...register('companyName', { required: true })} defaultValue={companyName}
+                                    {...register('companyName')} defaultValue={companyName}
                                     className="input input-bordered w-full"
                                     placeholder="Company name"
                                 />

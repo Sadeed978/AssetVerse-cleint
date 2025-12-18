@@ -8,11 +8,11 @@ import Login from "./Pages/Login";
 import AssetList from "./Pages/AssetList";
 import AddAssert from "./Pages/AddAssert";
 import EmployeeList from "./Pages/EmployeeList";
-import Requirement from "./Pages/Requirement";
 import PrivateRoute from "./PrivateRoute/PrivateRoutes";
 import MyAssert from "./Pages/Employee/MyAssert";
 import MyTeam from "./Pages/Employee/MyTeam";
 import RequestAsset from "./Pages/Employee/RequestAsset";
+import AllRequiest from "./Pages/AllRequiest";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -45,13 +45,12 @@ export const router = createBrowserRouter([
     
       },
       {
+        path:'/AllRequiests',
+        element:<PrivateRoute><AllRequiest></AllRequiest></PrivateRoute>
+     },
+      {
         path:'/EmployeeList',
         element:<PrivateRoute><EmployeeList></EmployeeList></PrivateRoute>
-    
-      },
-      {
-        path:'/Requirement',
-        element:<PrivateRoute><Requirement></Requirement></PrivateRoute>
     
       },
       {
