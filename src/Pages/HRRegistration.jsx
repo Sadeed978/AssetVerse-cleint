@@ -6,6 +6,8 @@ import { toast } from 'react-toastify';
 const HRRegistration = () => {
     const { setUser, createUser, } = use(AuthContext);
     const { register, handleSubmit } = useForm();
+    let limit=5;
+    let currentEmployees=0;
     const handleRegistration = (data) => {
 
         createUser(data.email, data.password)
@@ -21,7 +23,11 @@ const HRRegistration = () => {
                     companyLogo: data.companyLogo,
                     password: data.password,
                     dateOfBirth: data.dateOfBirth,
-                    role: 'hr'
+                    role: 'hr',
+                    packageLimit: limit,
+                    currentEmployees:currentEmployees,
+                    subscription: "basic"
+                  
                 };
                 fetch('http://localhost:3000/users', {
                     method: 'POST',
