@@ -1,10 +1,15 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { use } from 'react';
+import { Link } from 'react-router';
+import { toast } from 'react-toastify';
+import { useLocation, useNavigate } from 'react-router';
 import AuthContext from '../contexts/AuthContexts';
 
 const Login = () => {
     const { setUser,signInUser, } = use(AuthContext);
+    const location = useLocation();
+    const navigate= useNavigate();
     const { register, handleSubmit } = useForm();
     const handleLogin = (data) => {
         signInUser(data.email, data.password)
@@ -12,8 +17,13 @@ const Login = () => {
                 const users = result.user;
                 console.log(users);
                 setUser(users);
+                toast.success(users.email + ' Login Successful');
+                navigate(location.state || '/');
             })
-            .catch(error => console.error(error));
+            .catch(error =>{console.error(error);
+                toast.error('Login Failed: ' + error.message);
+            } 
+            );
     };
     return (
         <div>
@@ -36,6 +46,7 @@ const Login = () => {
                             <button className="btn btn-neutral mt-4">Log In </button>
                         </fieldset>
                     </form>
+                    <p>If you are new then go to <Link className='text-blue-500' to='/Register'>Register</Link></p>
                 </div>
             </div>
 

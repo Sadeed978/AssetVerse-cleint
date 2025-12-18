@@ -2,6 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import AuthContext from '../contexts/AuthContexts';
 import { use } from 'react';
+import { toast } from 'react-toastify';
 const EmployeeRegistration = () => {
     const {setUser ,createUser,} = use(AuthContext);
     const { register, handleSubmit} = useForm();
@@ -12,6 +13,7 @@ const EmployeeRegistration = () => {
             const users = result.user;
             console.log(users);
             setUser(users);
+            toast.success(users.email +' Registration Successful as Employee');
             const profile = {
                 displayName: data.name,
                 email: data.email,

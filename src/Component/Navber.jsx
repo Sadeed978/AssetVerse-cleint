@@ -5,13 +5,16 @@ import { use } from 'react';
 import AuthContext from '../contexts/AuthContexts';
 import Logo from './Logo';
 import { NavLink } from 'react-router';
+import { toast } from 'react-toastify';
 const Navber = () => {
     const { setUser, user, LogingOut, } = use(AuthContext);
     const [role,setRole]=useState(null);
+    const linkClass = ({ isActive }) => (isActive ? 'text-blue-500  font-bold' : 'default');
+
     const link = (<>
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/HRRegister">Registration As HR</Link></li>
-        <li><Link to="/EmployeeRegister">Registration As Employee</Link></li>
+        <li><NavLink to="/" className={linkClass}>Home</NavLink></li>
+        <li><NavLink to="/HRRegister" className={linkClass}>Registration As HR</NavLink></li>
+        <li><NavLink to="/EmployeeRegister" className={linkClass}>Registration As Employee</NavLink></li>
     </>);
     
     
@@ -19,6 +22,7 @@ const Navber = () => {
         LogingOut()
             .then(() => {
                 setUser(null);
+                toast.success('Logout Successful');
             })
             .catch((error) => {
                 console.error('Logout Error:', error);
@@ -77,18 +81,20 @@ const Navber = () => {
                                         )}
                                     </div></div>
                                     <ul tabIndex="-1" className="dropdown-content menu bg-base-100  z-1 w-52 p-2 shadow-sm">
+                                         <li className='font-bold text-black-600'>{user.name}</li>
+                                         <li className='font-bold text-black-600'>{user.email}</li>
                                        {role === 'hr' && <> 
-                                        <li><NavLink to='/AssetList'> Asset List</NavLink></li>
+                                        <li><NavLink to='/AssetList' className={linkClass}> Asset List</NavLink></li>
                                         <li> <NavLink> Profile</NavLink></li>
-                                        <li> <NavLink to='/AddAssert'> Add Asset</NavLink> </li>
-                                        <li> <NavLink to='/Requirement'> All Requireme</NavLink></li>
-                                        <li> <NavLink to='/EmployeeList'> Employee List</NavLink></li>
+                                        <li> <NavLink to='/AddAssert' className={linkClass}> Add Asset</NavLink> </li>
+                                        <li> <NavLink to='/Requirement' className={linkClass}> All Requireme</NavLink></li>
+                                        <li> <NavLink to='/EmployeeList' className={linkClass}> Employee List</NavLink></li>
                                         </>}
                                         {role === 'employee' && <>
-                                        <li><NavLink to='/MyAssets'> My Assets</NavLink></li>
+                                        <li><NavLink to='/MyAssets' className={linkClass}> My Assets</NavLink></li>
                                         <li> <NavLink> Profile</NavLink></li>
-                                        <li> <NavLink to='/RequestAsset'> Request Asset</NavLink> </li>
-                                        <li><NavLink to='/ myteam'>My Team</NavLink></li>
+                                        <li> <NavLink to='/RequestAsset' className={linkClass}> Request Asset</NavLink> </li>
+                                        <li><NavLink to='/ myteam' className={linkClass}>My Team</NavLink></li>
                                         </>}
                                     </ul>
                                 </div>
