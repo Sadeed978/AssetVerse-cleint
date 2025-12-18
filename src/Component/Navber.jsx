@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import { FaRegUserCircle } from 'react-icons/fa';
 import { use } from 'react';
@@ -7,11 +7,14 @@ import Logo from './Logo';
 import { NavLink } from 'react-router';
 const Navber = () => {
     const { setUser, user, LogingOut, } = use(AuthContext);
+    const [role,setRole]=useState(null);
     const link = (<>
         <li><Link to="/">Home</Link></li>
         <li><Link to="/HRRegister">Registration As HR</Link></li>
         <li><Link to="/EmployeeRegister">Registration As Employee</Link></li>
     </>);
+    
+    
     const handleLogOut = () => {
         LogingOut()
             .then(() => {
@@ -20,7 +23,20 @@ const Navber = () => {
             .catch((error) => {
                 console.error('Logout Error:', error);
             });
-    };
+  };
+    useEffect(() => {
+       if (user){
+        fetch(`http://localhost:3000/users/${user?.email}`)
+        .then(res => res.json())
+        .then(data => {
+            console.log('Fetched user data:', data);
+            setRole(data.role);
+        })
+        .catch(error => console.error('Error fetching user data:', error));
+       }
+    },[user] );
+            
+        
     return (
         <div>
             <div className="navbar bg-base-100 shadow-sm">
@@ -61,14 +77,14 @@ const Navber = () => {
                                         )}
                                     </div></div>
                                     <ul tabIndex="-1" className="dropdown-content menu bg-base-100  z-1 w-52 p-2 shadow-sm">
-                                       {user.role === 'hr' && <> 
+                                       {role === 'hr' && <> 
                                         <li><NavLink to='/AssetList'> Asset List</NavLink></li>
                                         <li> <NavLink> Profile</NavLink></li>
                                         <li> <NavLink to='/AddAssert'> Add Asset</NavLink> </li>
                                         <li> <NavLink to='/Requirement'> All Requireme</NavLink></li>
                                         <li> <NavLink to='/EmployeeList'> Employee List</NavLink></li>
                                         </>}
-                                        {user.role === 'employee' && <>
+                                        {role === 'employee' && <>
                                         <li><NavLink to='/MyAssets'> My Assets</NavLink></li>
                                         <li> <NavLink> Profile</NavLink></li>
                                         <li> <NavLink to='/RequestAsset'> Request Asset</NavLink> </li>

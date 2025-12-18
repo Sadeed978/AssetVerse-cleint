@@ -65,7 +65,7 @@ const HRRegistration = () => {
 
                             <button className="btn btn-neutral mt-4">Register</button>
                         </fieldset>
-                        <p><p>If You have An Account <Link className='text-blue-500' to='/Login'>Login</Link></p></p>
+                        <p>If You have An Account <Link className='text-blue-500' to='/Login'>Login</Link></p>
                     </form>
                 </div>
             </div>
