@@ -13,6 +13,8 @@ import MyAssert from "./Pages/Employee/MyAssert";
 import MyTeam from "./Pages/Employee/MyTeam";
 import RequestAsset from "./Pages/Employee/RequestAsset";
 import AllRequiest from "./Pages/AllRequiest";
+import AssetsDetails from "./Pages/AssetsDetails";
+import DashboardLayout from "./DashboardLayout";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -34,37 +36,51 @@ export const router = createBrowserRouter([
       {
         path:"/Login",
         Component:Login,
-      },
-      {
-        path:'/AssetList',
-        element:<PrivateRoute><AssetList></AssetList></PrivateRoute>
-      },
-      {
-        path:'/AddAssert',
-        element:<PrivateRoute><AddAssert></AddAssert></PrivateRoute>
-    
-      },
-      {
-        path:'/AllRequiests',
-        element:<PrivateRoute><AllRequiest></AllRequiest></PrivateRoute>
-     },
-      {
-        path:'/EmployeeList',
-        element:<PrivateRoute><EmployeeList></EmployeeList></PrivateRoute>
-    
-      },
-      {
-        path:'/MyAssets',
-        element:<PrivateRoute><MyAssert></MyAssert></PrivateRoute>
-      },
-      {
-        path:'/myteam',
-        element:<PrivateRoute><MyTeam></MyTeam></PrivateRoute>
-      },
-      {
-        path:'/RequestAsset',
-        element:<PrivateRoute><RequestAsset></RequestAsset></PrivateRoute>
       }
     ]
-  },
+    },
+      {
+        path:'/',
+        Component:DashboardLayout,
+        children:[
+          
+            {
+              path:'/AssetList',
+              element:<PrivateRoute><AssetList></AssetList></PrivateRoute>
+            },
+            {
+              path:'/AddAssert',
+              element:<PrivateRoute><AddAssert></AddAssert></PrivateRoute>
+          
+            },
+            {
+              path:'/AllRequiests',
+              element:<PrivateRoute><AllRequiest></AllRequiest></PrivateRoute>
+           },
+           {
+            path:'/EmployeeList',
+            element:<PrivateRoute><EmployeeList></EmployeeList></PrivateRoute>
+        
+          },
+          {
+            path:'/MyAssets',
+            element:<PrivateRoute><MyAssert></MyAssert></PrivateRoute>
+          },
+          {
+            path:'/myteam',
+            element:<PrivateRoute><MyTeam></MyTeam></PrivateRoute>
+          },
+          {
+            path:'/assetsDetails/:id',
+            loader:({params})=>fetch(`http://localhost:3000/assets/${params.id}`),
+            element:<PrivateRoute><AssetsDetails></AssetsDetails></PrivateRoute>
+          },
+          {
+            path:'/RequestAsset',
+            loader:()=>fetch('http://localhost:3000/assets'),
+            element:<PrivateRoute><RequestAsset></RequestAsset></PrivateRoute>
+          }
+        ]
+      }
+    
 ]);
