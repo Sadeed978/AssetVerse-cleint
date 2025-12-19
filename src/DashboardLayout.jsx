@@ -27,19 +27,21 @@ const DashboardLayout = () => {
             </div>
             <div className="flex">
                 <div className="menu p-8 w-50 bg-base-200 text-base-content">
-                    <li><NavLink>DashboardHome</NavLink></li>
+                   
                     {role === 'hr' && <>
-                        <li><NavLink to='/AssetList' className={linkClass}> Asset List</NavLink></li>
+                        <li> <NavLink to='/Dashboard/HR' className={linkClass}>Dashboard</NavLink></li>
+                        <li><NavLink to='/Dashboard/AssetList' className={linkClass}> Asset List</NavLink></li>
                         <li> <NavLink> Profile</NavLink></li>
-                        <li> <NavLink to='/AddAssert' className={linkClass}> Add Asset</NavLink> </li>
-                        <li> <NavLink to='/Requirement' className={linkClass}> All Requireme</NavLink></li>
-                        <li> <NavLink to='/EmployeeList' className={linkClass}> Employee List</NavLink></li>
+                        <li> <NavLink to='/Dashboard/AddAssert' className={linkClass}> Add Asset</NavLink></li>
+                        <li> <NavLink to='/Dashboard/Requirement' className={linkClass}> All Requireme</NavLink></li>
+                        <li> <NavLink to='/Dashboard/EmployeeList' className={linkClass}> Employee List</NavLink></li>
                     </>}
                     {role === 'employee' && <>
-                        <li><NavLink to='/MyAssets' className={linkClass}> My Assets</NavLink></li>
+                        <li> <NavLink to='/Dashboard/Employee' className={linkClass}>Dashboard</NavLink></li>
+                        <li><NavLink to='/Dashboard/MyAssets' className={linkClass}> My Assets</NavLink></li>
                         <li> <NavLink> Profile</NavLink></li>
-                        <li> <NavLink to='/RequestAsset' className={linkClass}> Request Asset</NavLink> </li>
-                        <li><NavLink to='/ myteam' className={linkClass}>My Team</NavLink></li>
+                        <li> <NavLink to='/Dashboard/RequestAsset' className={linkClass}> Request Asset</NavLink> </li>
+                        <li><NavLink to='/Dashboard/myteam' className={linkClass}>My Team</NavLink></li>
                     </>}
                 </div>
                 <Outlet></Outlet>

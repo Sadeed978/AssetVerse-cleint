@@ -15,6 +15,8 @@ import RequestAsset from "./Pages/Employee/RequestAsset";
 import AllRequiest from "./Pages/AllRequiest";
 import AssetsDetails from "./Pages/AssetsDetails";
 import DashboardLayout from "./DashboardLayout";
+import EmployeeDashboard from "./Pages/Dashboard/EmployeeDashboard";
+import HrDashboard from "./Pages/Dashboard/HrDashboard";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -45,40 +47,48 @@ export const router = createBrowserRouter([
         children:[
           
             {
-              path:'/AssetList',
+              path:'/Dashboard/AssetList',
               element:<PrivateRoute><AssetList></AssetList></PrivateRoute>
             },
             {
-              path:'/AddAssert',
+              path:'/Dashboard/AddAssert',
               element:<PrivateRoute><AddAssert></AddAssert></PrivateRoute>
           
             },
             {
-              path:'/AllRequiests',
+              path:'/Dashboard/AllRequiests',
               element:<PrivateRoute><AllRequiest></AllRequiest></PrivateRoute>
            },
            {
-            path:'/EmployeeList',
+            path:'/Dashboard/EmployeeList',
             element:<PrivateRoute><EmployeeList></EmployeeList></PrivateRoute>
         
           },
           {
-            path:'/MyAssets',
+            path:'/Dashboard/MyAssets',
             element:<PrivateRoute><MyAssert></MyAssert></PrivateRoute>
           },
           {
-            path:'/myteam',
+            path:'/Dashboard/myteam',
             element:<PrivateRoute><MyTeam></MyTeam></PrivateRoute>
           },
           {
-            path:'/assetsDetails/:id',
+            path:'/Dashboard/assetsDetails/:id',
             loader:({params})=>fetch(`http://localhost:3000/assets/${params.id}`),
             element:<PrivateRoute><AssetsDetails></AssetsDetails></PrivateRoute>
           },
           {
-            path:'/RequestAsset',
+            path:'/Dashboard/RequestAsset',
             loader:()=>fetch('http://localhost:3000/assets'),
             element:<PrivateRoute><RequestAsset></RequestAsset></PrivateRoute>
+          },
+          {
+            path:'/Dashboard/Employee',
+            element:<PrivateRoute><EmployeeDashboard></EmployeeDashboard></PrivateRoute>
+          },
+          {
+            path:'/Dashboard/HR',
+            element:<PrivateRoute><HrDashboard></HrDashboard></PrivateRoute>
           }
         ]
       }
