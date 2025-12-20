@@ -3,6 +3,7 @@ import Logo from './Component/Logo';
 import { Outlet } from 'react-router';
 import { use, useEffect, useState } from 'react';
 import { NavLink } from 'react-router';
+import { Link } from 'react-router';
 import AuthContext from './contexts/AuthContexts';
 
 const DashboardLayout = () => {
@@ -23,7 +24,11 @@ const DashboardLayout = () => {
     return (
         <div>
             <div>
+                <Link to='/' className="">
                 <Logo></Logo>
+                </Link>
+
+
             </div>
             <div className="flex">
                 <div className="menu p-8 w-50 bg-base-200 text-base-content">
@@ -33,7 +38,7 @@ const DashboardLayout = () => {
                         <li><NavLink to='/Dashboard/AssetList' className={linkClass}> Asset List</NavLink></li>
                         <li> <NavLink> Profile</NavLink></li>
                         <li> <NavLink to='/Dashboard/AddAssert' className={linkClass}> Add Asset</NavLink></li>
-                        <li> <NavLink to='/Dashboard/Requirement' className={linkClass}> All Requireme</NavLink></li>
+                        <li> <NavLink to='/Dashboard/AllRequiests' className={linkClass}> All Request</NavLink></li>
                         <li> <NavLink to='/Dashboard/EmployeeList' className={linkClass}> Employee List</NavLink></li>
                     </>}
                     {role === 'employee' && <>

@@ -65,10 +65,7 @@ const Navber = () => {
                 <div className="navbar-end">
                     <div className="navbar-end">
                         {user ? (
-
                             <div className='flex item -end gap-3'>
-
-
                                 <div className="dropdown dropdown-start">
                                     <div tabIndex={0} role="button" ><div>
                                         {user.photoURL ? (
@@ -80,17 +77,19 @@ const Navber = () => {
                                             <FaRegUserCircle className='w-10 h-10'></FaRegUserCircle>
                                         )}
                                     </div></div>
-                                    <ul tabIndex="-1" className="dropdown-content menu bg-base-100  z-1 w-52 p-2 shadow-sm">
+                                    <ul tabIndex="-1" className="dropdown-content menu bg-base-100  z-80 w-52 p-2 -ml-20 shadow-sm">
                                          <li className='font-bold text-black-600'>{user.name}</li>
                                          <li className='font-bold text-black-600'>{user.email}</li>
-                                       {role === 'hr' && <> 
+                                       {role === 'hr' && <>
+                                         <li> <NavLink to='/Dashboard/HR' className={linkClass}>Dashboard</NavLink></li> 
                                         <li><NavLink to='/Dashboard/AssetList' className={linkClass}> Asset List</NavLink></li>
                                         <li> <NavLink> Profile</NavLink></li>
                                         <li> <NavLink to='/Dashboard/AddAssert' className={linkClass}> Add Asset</NavLink> </li>
-                                        <li> <NavLink to='/Dashboard/Requirement' className={linkClass}> All Requireme</NavLink></li>
+                                        <li> <NavLink to='/Dashboard/AllRequiests' className={linkClass}> All Request</NavLink></li>
                                         <li> <NavLink to='/Dashboard/EmployeeList' className={linkClass}> Employee List</NavLink></li>
                                         </>}
                                         {role === 'employee' && <>
+                                        <li> <NavLink to='/Dashboard/Employee' className={linkClass}>Dashboard</NavLink></li>
                                         <li><NavLink to='/Dashboard/MyAssets' className={linkClass}> My Assets</NavLink></li>
                                         <li> <NavLink> Profile</NavLink></li>
                                         <li> <NavLink to='/Dashboard/RequestAsset' className={linkClass}> Request Asset</NavLink> </li>

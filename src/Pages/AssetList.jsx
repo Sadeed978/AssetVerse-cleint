@@ -13,7 +13,7 @@ const AssetList = () => {
     useEffect(() => {
         if (!user?.email) return;
 
-        fetch(`http://localhost:3000/assets/${user.email}`)
+        fetch(`http://localhost:3000/assets/hr/${user.email}`)
             .then(res => {
                 if (!res.ok) return Promise.reject('Failed to fetch assets');
                 return res.json();
@@ -29,7 +29,8 @@ const AssetList = () => {
     }, [user?.email]);
 
     if (loading) return <p>Loading assets...</p>;
-    if (error) return <p>{error}</p>;
+    console.log(error);
+    //if (error) return <p>{error}</p>;
 
     return (
         <div className="text-2xl text-center">
