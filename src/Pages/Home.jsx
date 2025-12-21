@@ -3,6 +3,7 @@ import Banner from '../Component/Banner';
 import AboutSection from '../Component/AboutSection';
 import Pacages from '../Component/Pacages';
 import Benifits from '../Component/Benifits';
+import Contact from '../Component/ExtraPart/Contact';
 const pacagePromise = fetch('http://localhost:3000/pacages')
     .then(res => res.json())
 const Home = () => {
@@ -39,9 +40,14 @@ const Home = () => {
                     </div>
                 </div>
             </div>
+
+            <div className='px-4 my-12'>
+                <Contact></Contact>
+            </div>
             <div className='mb-12'>
                 <Benifits></Benifits>
             </div>
+            
         </div>
     );
 };

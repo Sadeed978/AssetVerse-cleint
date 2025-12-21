@@ -22,7 +22,7 @@ const RequestAsset = () => {
                                         <h2 className="card-title">{request.productName}</h2>
                                         <p className='text-blue-500'>Product Type:{request.productType}</p>
                                         <p className='text-blue-500'>Product Quantity:{request.productQuantity}</p>
-                                        <Link to={`/assetsDetails/${request._id}`}>  <button className="btn btn-primary">Request Asset</button>
+                                        <Link to={`/Dashboard/assetsDetails/${request._id}`}>  <button className="btn btn-primary">Request Asset</button>
                                         </Link>
                                     </div>
                                 </div>
