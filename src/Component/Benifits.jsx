@@ -5,22 +5,51 @@ import 'swiper/css';
 
 const benefits = [
     {
-        title: 'Modular Asset Categories',
-        desc: 'Organize assets into customizable categories based on business needs.',
+      badge: 'Core Feature',
+      title: 'Asset Categorization',
+      tag: 'Management',
+      features: [
+        'Custom asset categories',
+        'Department-wise grouping',
+        'Tag-based classification',
+        'Asset type configuration',
+      ],
     },
     {
-        title: 'Advanced Search & Filtering',
-        desc: 'Quickly locate assets using filters like status, category, or assigned user.',
+      badge: 'Smart Tool',
+      title: 'Advanced Search',
+      tag: 'Discovery',
+      features: [
+        'Filter by status & owner',
+        'Category-based search',
+        'Date & activity filters',
+        'Instant result loading',
+      ],
     },
     {
-        title: 'Asset History & Activity Logs',
-        desc: 'Maintain a complete audit trail of asset assignments and updates.',
+      badge: 'Tracking',
+      title: 'Activity Logs',
+      tag: 'Monitoring',
+      features: [
+        'Complete asset history',
+        'Assignment tracking',
+        'Status change logs',
+        'User action records',
+      ],
     },
     {
-        title: 'Notification & Status Alerts',
-        desc: 'Get real-time alerts for asset requests, approvals, and changes.',
+      badge: 'Automation',
+      title: 'Notifications',
+      tag: 'Alerts',
+      features: [
+        'Request notifications',
+        'Approval status alerts',
+        'Return reminders',
+        'System activity updates',
+      ],
     },
-];
+  ];
+  
 const Benifits = () => {
 
     return (
@@ -38,16 +67,15 @@ const Benifits = () => {
                 }}
             >{benefits.map((benefit, index) => (
                 <SwiperSlide key={index}>
-                    <div className=''>
-                        <div className="card w-96 bg-gray-200 card-xs shadow-sm">
-                            <div className="card-body">
-                                <h2 className="card-title">{benefit.title}</h2>
-                                <p>{benefit.desc}</p>
-                                <div className="justify-end card-actions">
-                                    
-                                </div>
-                            </div>
-                        </div>
+                    <div className="card bg-base-100 shadow-xl border border-gray-200 p-6">
+                        <div className="badge badge-secondary mb-4">{benefit.badge}</div>
+                        <h2 className="card-title text-2xl mb-2">{benefit.title}</h2>
+                        <div className="badge badge-outline mb-4">{benefit.tag}</div>
+                        <ul className="list-disc list-inside space-y-2">
+                            {benefit.features.map((feature, idx) => (
+                                <li key={idx}>{feature}</li>
+                            ))}
+                        </ul>
                     </div>
                 </SwiperSlide>
             ))}
