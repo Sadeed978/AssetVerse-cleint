@@ -6,7 +6,7 @@ const Requests = ({ requestPromise}) => {
         return <div>No requests available.</div>;
     }
     return (
-        <div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {requestPromise.map((request) => (
                 <SingleRequest key={request._id} request={request} ></SingleRequest>
             ))}
