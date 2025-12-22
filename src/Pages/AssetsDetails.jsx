@@ -13,6 +13,7 @@ const AssetsDetails = () => {
     const[email,SetEmail]=useState('');
     const[assetsName,SetAssetsName]=useState('');
     const[assetsType,SetAssetsType]=useState('');
+    const[assetQuantity,SetAssetQuantity]=useState(0);
     const [companyName,SetCompanyName]=useState(null);
     useEffect(() => {
             if (user){
@@ -29,9 +30,10 @@ const AssetsDetails = () => {
                SetAssetsName(data.productName);
                SetAssetsType(data.productType);
                SetCompanyName(data.companyName);
+               SetAssetQuantity(parseInt(data.productQuantity));
                SetEmail(data.hrEmail);
             })
-        },[user] );
+        },[user,id] );
 
         
 
@@ -42,6 +44,7 @@ const AssetsDetails = () => {
         data.requesterEmail=user?.email;
         data.companyName=companyName;
         data.hrEmail=email;
+        data.productQuantity=parseInt(data.productQuantity);
         data.status='pending';
         data.requestDate=new Date().toISOString().split('T')[0];
         console.log(data);
@@ -83,6 +86,16 @@ const AssetsDetails = () => {
                             {...register('assetType')} defaultValue={assetsType}
                         />
                     </div>
+                    <div>
+                    <label className="label mr-4 items-center gap-4">Total Quantity </label>
+    
+                                <input
+                                    type="number"
+                                    {...register('productQuantity', { required: true, min: 1 ,max: {assetQuantity}})}
+                                    className="input input-bordered w-full"
+                                    placeholder="Total quantity"
+                                />
+                    </div>    
                     <div className="mb-4">
                         <label className="block text-gray-700">Requester Name</label>
                         <input
