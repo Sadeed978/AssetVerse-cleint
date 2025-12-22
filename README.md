@@ -1,16 +1,42 @@
-# React + Vite
+                                                      AssetsVerse
+It mainly refers to several distinct concepts depending on the context,primarily it is as the name of different companies and as a technical term. According to my website it refers to business management where you will be connected with another person and can take assets.
+On this website you can register as an employee or a HR manager. Here you can Assign Assets and also you can assign assets as an employee . 
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Feature as HR manager:
+       You can assign your Assets.update it and also you can delete it. On the other side when an Employee would request you to affiliate with him or her. You can cancel the request and also approve it. You have 3 basic 
 
-Currently, two official plugins are available:
+Feature as An employee:
+    You see all the company’s Assets.you  can request the assets item. Also you can see the members of your  company. 
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+I 
 
-## React Compiler
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-## Expanding the ESLint configuration
+use the Package :
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Package
+Purpose
+react
+Core React library
+react-dom
+Renders React to the DOM
+react-router
+Core routing logic
+react-router-dom
+Browser routing (links, routes)
+firebase
+Authentication, database, hosting
+react-hook-form
+Form handling & validation
+react-icons
+Icon library
+react-toastify
+Toast notifications
+swiper
+Sliders / carousels
+tailwindcss
+Utility-first CSS framework
+@tailwindcss/vite
+Tailwind integration with Vite
+
+

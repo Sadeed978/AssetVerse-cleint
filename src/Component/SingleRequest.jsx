@@ -25,7 +25,7 @@ const SingleRequest = ({ request }) => {
     queryKey: ['user', user.email],
     enabled: !!user?.email,
     queryFn: async () => {
-      const res = await fetch(`http://localhost:3000/users/${user.email}`)
+      const res = await fetch(`https://asset-verse-server-phi.vercel.app/users/${user.email}`)
       if (!res.ok) throw new Error('Failed to fetch user')
       return res.json()
     },
@@ -36,7 +36,7 @@ const SingleRequest = ({ request }) => {
   
   const acceptRequestMutation = useMutation({
     mutationFn: async () => {
-      const res = await fetch(`http://localhost:3000/requests/hrEmail/${_id}`, {
+      const res = await fetch(`https://asset-verse-server-phi.vercel.app/requests/hrEmail/${_id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: 'accepted' }),
@@ -49,7 +49,7 @@ const SingleRequest = ({ request }) => {
  
   const updateUserMutation = useMutation({
     mutationFn: async (newEmployeeCount) => {
-      const res = await fetch(`http://localhost:3000/users/${user.email}`, {
+      const res = await fetch(`https://asset-verse-server-phi.vercel.app/users/${user.email}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -65,7 +65,7 @@ const SingleRequest = ({ request }) => {
  
   const createAffiliationMutation = useMutation({
     mutationFn: async () => {
-      const res = await fetch(`http://localhost:3000/employeeAffiliation`, {
+      const res = await fetch(`https://asset-verse-server-phi.vercel.app/employeeAffiliation`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(profile),
@@ -77,7 +77,7 @@ const SingleRequest = ({ request }) => {
   
   const denyRequestMutation = useMutation({
     mutationFn: async () => {
-      const res = await fetch(`http://localhost:3000/requests/hrEmail/${_id}`, {
+      const res = await fetch(`https://asset-verse-server-phi.vercel.app/requests/hrEmail/${_id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: 'denied' }),
@@ -92,7 +92,7 @@ const SingleRequest = ({ request }) => {
     queryKey: ['employeeAffiliation', requesterEmail],
     enabled: !!requesterEmail,
     queryFn: async () => {
-      const res = await fetch(`http://localhost:3000/employeeAffiliation/${requesterEmail}`)
+      const res = await fetch(`https://asset-verse-server-phi.vercel.app/employeeAffiliation/${requesterEmail}`)
       if (!res.ok) throw new Error('Failed to fetch affiliation')
       return res.json() 
     },

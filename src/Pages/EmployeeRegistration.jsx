@@ -22,7 +22,7 @@ const EmployeeRegistration = () => {
                 role: 'employee'
             };
             console.log(profile);
-            fetch('http://localhost:3000/users', {
+            fetch('https://asset-verse-server-phi.vercel.app/users', {
                 method:'POST',
                 headers:{
                     'Content-Type':'application/json'

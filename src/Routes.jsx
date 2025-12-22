@@ -74,12 +74,12 @@ export const router = createBrowserRouter([
           },
           {
             path:'/Dashboard/assetsDetails/:id',
-            loader:({params})=>fetch(`http://localhost:3000/assets/${params.id}`),
+            loader:({params})=>fetch(`https://asset-verse-server-phi.vercel.app/assets/${params.id}`),
             element:<PrivateRoute><AssetsDetails></AssetsDetails></PrivateRoute>
           },
           {
             path:'/Dashboard/RequestAsset',
-            loader:()=>fetch('http://localhost:3000/assets'),
+            loader:()=>fetch('https://asset-verse-server-phi.vercel.app/assets'),
             element:<PrivateRoute><RequestAsset></RequestAsset></PrivateRoute>
           },
           {

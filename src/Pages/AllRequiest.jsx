@@ -8,7 +8,7 @@ const AllRequiest = () => {
     const [requestPromise,setRequestPromise]=useState(null);
     useEffect(() => {
         if (!user?.email) return;{
-            fetch(`http://localhost:3000/requests/${user?.email}`)
+            fetch(`https://asset-verse-server-phi.vercel.app/requests/${user?.email}`)
             .then(res => res.json())
             .then(data => {
                 setRequestPromise(data);

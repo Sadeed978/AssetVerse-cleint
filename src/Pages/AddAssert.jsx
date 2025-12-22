@@ -9,7 +9,7 @@ const AddAssert = () => {
     const [companyName,SetCompanyName]=useState(null);
     useEffect(() => {
         if (user){
-         fetch(`http://localhost:3000/users/${user?.email}`)
+         fetch(`https://asset-verse-server-phi.vercel.app/users/${user?.email}`)
          .then(res => res.json())
          .then(data => {
              SetCompanyName(data.companyName)
@@ -20,7 +20,7 @@ const AddAssert = () => {
     const onSubmit = data => {
         data.companyName=companyName;
         console.log(data);
-        fetch('http://localhost:3000/assets', {
+        fetch('https://asset-verse-server-phi.vercel.app/assets', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

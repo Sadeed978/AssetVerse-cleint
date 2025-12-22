@@ -30,7 +30,7 @@ const Navber = () => {
   };
     useEffect(() => {
        if (user){
-        fetch(`http://localhost:3000/users/${user?.email}`)
+        fetch(`https://asset-verse-server-phi.vercel.app/users/${user?.email}`)
         .then(res => res.json())
         .then(data => {
             console.log('Fetched user data:', data);

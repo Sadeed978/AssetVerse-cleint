@@ -4,7 +4,7 @@ import AboutSection from '../Component/AboutSection';
 import Pacages from '../Component/Pacages';
 import Benifits from '../Component/Benifits';
 import Contact from '../Component/ExtraPart/Contact';
-const pacagePromise = fetch('http://localhost:3000/pacages')
+const pacagePromise = fetch('https://asset-verse-server-phi.vercel.app/pacages')
     .then(res => res.json())
 const Home = () => {
 

@@ -13,7 +13,7 @@ const AssetList = () => {
     useEffect(() => {
         if (!user?.email) return;
 
-        fetch(`http://localhost:3000/assets/hr/${user.email}`)
+        fetch(`https://asset-verse-server-phi.vercel.app/assets/hr/${user.email}`)
             .then(res => {
                 if (!res.ok) return Promise.reject('Failed to fetch assets');
                 return res.json();

@@ -17,14 +17,14 @@ const AssetsDetails = () => {
     const [companyName,SetCompanyName]=useState(null);
     useEffect(() => {
             if (user){
-             fetch(`http://localhost:3000/users/${user?.email}`)
+             fetch(`https://asset-verse-server-phi.vercel.app/users/${user?.email}`)
              .then(res => res.json())
              .then(data => {
                 SetName(data.displayName);
              })
              .catch(error => console.error('Error fetching user data:', error));
             }
-            fetch(`http://localhost:3000/assets/${id}`)
+            fetch(`https://asset-verse-server-phi.vercel.app/assets/${id}`)
             .then(res => res.json())
             .then(data => {
                SetAssetsName(data.productName);
@@ -48,7 +48,7 @@ const AssetsDetails = () => {
         data.status='pending';
         data.requestDate=new Date().toISOString().split('T')[0];
         console.log(data);
-        fetch('http://localhost:3000/requests', {
+        fetch('https://asset-verse-server-phi.vercel.app/requests', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
