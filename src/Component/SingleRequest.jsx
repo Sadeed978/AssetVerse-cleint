@@ -7,12 +7,14 @@ const SingleRequest = ({ request }) => {
   const { user } = use(AuthContext)
   const queryClient = useQueryClient()
 
-  const { _id, assetName, assetType, requesterEmail, quantity, status } = request
+  const { _id,requesterName,companyName, assetName, assetType, requesterEmail, quantity, status } = request
 
   
   const profile = {
+    employeeName: requesterName,
     employeeEmail: requesterEmail,
     hrEmail: user.email,
+    companyName: companyName,
     assetName,
     assetType,
     quantity,
