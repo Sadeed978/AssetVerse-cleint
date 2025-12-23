@@ -17,6 +17,7 @@ import AssetsDetails from "./Pages/AssetsDetails";
 import DashboardLayout from "./DashboardLayout";
 import EmployeeDashboard from "./Pages/Dashboard/EmployeeDashboard";
 import HrDashboard from "./Pages/Dashboard/HrDashboard";
+import Profile from "./Pages/Profile";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -81,6 +82,10 @@ export const router = createBrowserRouter([
             path:'/Dashboard/RequestAsset',
             loader:()=>fetch('https://asset-verse-server-phi.vercel.app/assets'),
             element:<PrivateRoute><RequestAsset></RequestAsset></PrivateRoute>
+          },
+          {
+            path:'/Dashboard/Profile',
+            element:<PrivateRoute><Profile></Profile></PrivateRoute>
           },
           {
             path:'/Dashboard/Employee',

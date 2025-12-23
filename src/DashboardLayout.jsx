@@ -5,6 +5,7 @@ import { use, useEffect, useState } from 'react';
 import { NavLink } from 'react-router';
 import { Link } from 'react-router';
 import AuthContext from './contexts/AuthContexts';
+import Footer from './Component/Footer';
 
 const DashboardLayout = () => {
     const { user, LogingOut, } = use(AuthContext);
@@ -36,7 +37,7 @@ const DashboardLayout = () => {
                     {role === 'hr' && <>
                         <li> <NavLink to='/Dashboard/HR' className={linkClass}>Dashboard</NavLink></li>
                         <li><NavLink to='/Dashboard/AssetList' className={linkClass}> Asset List</NavLink></li>
-                        <li> <NavLink> Profile</NavLink></li>
+                        <li> <NavLink to='/Dashboard/Profile'> Profile</NavLink></li>
                         <li> <NavLink to='/Dashboard/AddAssert' className={linkClass}> Add Asset</NavLink></li>
                         <li> <NavLink to='/Dashboard/AllRequiests' className={linkClass}> All Request</NavLink></li>
                         <li> <NavLink to='/Dashboard/EmployeeList' className={linkClass}> Employee List</NavLink></li>
@@ -44,12 +45,16 @@ const DashboardLayout = () => {
                     {role === 'employee' && <>
                         <li> <NavLink to='/Dashboard/Employee' className={linkClass}>Dashboard</NavLink></li>
                         <li><NavLink to='/Dashboard/MyAssets' className={linkClass}> My Assets</NavLink></li>
-                        <li> <NavLink> Profile</NavLink></li>
+                        <li> <NavLink to='/Dashboard/Profile'> Profile</NavLink></li>
                         <li> <NavLink to='/Dashboard/RequestAsset' className={linkClass}> Request Asset</NavLink> </li>
                         <li><NavLink to='/Dashboard/myteam' className={linkClass}>My Team</NavLink></li>
                     </>}
                 </div>
                 <Outlet></Outlet>
+            </div>
+           
+            <div>
+                <Footer></Footer>
             </div>
         </div>
     );
