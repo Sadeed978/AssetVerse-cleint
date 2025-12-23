@@ -6,7 +6,7 @@ import AuthContext from '../../contexts/AuthContexts';
 
 const MyTeam = () => {
   const { user } = use(AuthContext);
-  const userEmail = user?.email;
+  const userEmail = user.email;
 
 
   const {
