@@ -18,6 +18,8 @@ import DashboardLayout from "./DashboardLayout";
 import EmployeeDashboard from "./Pages/Dashboard/EmployeeDashboard";
 import HrDashboard from "./Pages/Dashboard/HrDashboard";
 import Profile from "./Pages/Profile";
+import Aboutus from "./Pages/Aboutus";
+import Contact from "./Pages/Contact";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -39,7 +41,16 @@ export const router = createBrowserRouter([
       {
         path:"/Login",
         Component:Login,
+      },
+      {
+        path:'/aboutUs',
+        Component:Aboutus
+      },
+      {
+        path:'/contactus',
+        Component:Contact
       }
+
     ]
     },
       {

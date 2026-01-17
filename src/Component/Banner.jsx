@@ -17,13 +17,13 @@ const Banner = () => {
       modules={[Autoplay]}
       autoplay={{ delay: 3000, disableOnInteraction: false }}
       loop={true}
-      className="min-h-screen"
+      className="min-h-120"
     >
       {images.map((img, index) => (
         <SwiperSlide key={index}>
           <div
-            className="hero min-h-screen"
-            style={{ backgroundImage: `url(${img})` }}
+            className="hero min-h-120 "
+            style={{ backgroundImage: `url(${img})`}}
           >
             <div className="hero-overlay bg-opacity-60"></div>
 

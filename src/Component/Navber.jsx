@@ -8,16 +8,24 @@ import { NavLink } from 'react-router';
 import { toast } from 'react-toastify';
 const Navber = () => {
     const { setUser, user, LogingOut, } = use(AuthContext);
-    const [role,setRole]=useState(null);
+    const [role, setRole] = useState(null);
     const linkClass = ({ isActive }) => (isActive ? 'text-blue-500  font-bold' : 'default');
 
     const link = (<>
         <li><NavLink to="/" className={linkClass}>Home</NavLink></li>
         <li><NavLink to="/HRRegister" className={linkClass}>Registration As HR</NavLink></li>
         <li><NavLink to="/EmployeeRegister" className={linkClass}>Registration As Employee</NavLink></li>
+        {user && <>
+            <li><NavLink to='/dashboard/profile' className={linkClass}>Profile</NavLink></li>
+        </>}
+        {role === 'hr' && <>
+            <li> <NavLink to='/Dashboard/HR' className={linkClass}>Dashboard</NavLink></li> </>}
+
+        {role === 'employee' && <>
+                <li> <NavLink to='/Dashboard/Employee' className={linkClass}>Dashboard</NavLink></li></>}
     </>);
-    
-    
+
+
     const handleLogOut = () => {
         LogingOut()
             .then(() => {
@@ -27,20 +35,20 @@ const Navber = () => {
             .catch((error) => {
                 console.error('Logout Error:', error);
             });
-  };
+    };
     useEffect(() => {
-       if (user){
-        fetch(`https://asset-verse-server-phi.vercel.app/users/${user?.email}`)
-        .then(res => res.json())
-        .then(data => {
-            console.log('Fetched user data:', data);
-            setRole(data.role);
-        })
-        .catch(error => console.error('Error fetching user data:', error));
-       }
-    },[user]);
-            
-        
+        if (user) {
+            fetch(`https://asset-verse-server-phi.vercel.app/users/${user?.email}`)
+                .then(res => res.json())
+                .then(data => {
+                    console.log('Fetched user data:', data);
+                    setRole(data.role);
+                })
+                .catch(error => console.error('Error fetching user data:', error));
+        }
+    }, [user]);
+
+
     return (
         <div>
             <div className="navbar bg-base-100 shadow-sm">
@@ -51,7 +59,7 @@ const Navber = () => {
                         </div>
                         <ul
                             tabIndex="-1"
-                            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+                            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-20 mt-3 w-52 p-2 shadow">
                             {link}
                         </ul>
                     </div>
@@ -78,22 +86,22 @@ const Navber = () => {
                                         )}
                                     </div></div>
                                     <ul tabIndex="-1" className="dropdown-content menu bg-base-100  z-80 w-52 p-2 -ml-20 shadow-sm">
-                                         <li className='font-bold text-black-600'>{user.name}</li>
-                                         <li className='font-bold text-black-600'>{user.email}</li>
-                                       {role === 'hr' && <>
-                                         <li> <NavLink to='/Dashboard/HR' className={linkClass}>Dashboard</NavLink></li> 
-                                        <li><NavLink to='/Dashboard/AssetList' className={linkClass}> Asset List</NavLink></li>
-                                        <li> <NavLink to='/Dashboard/Profile'> Profile</NavLink></li>
-                                        <li> <NavLink to='/Dashboard/AddAssert' className={linkClass}> Add Asset</NavLink> </li>
-                                        <li> <NavLink to='/Dashboard/AllRequiests' className={linkClass}> All Request</NavLink></li>
-                                        <li> <NavLink to='/Dashboard/EmployeeList' className={linkClass}> Employee List</NavLink></li>
+                                        <li className='font-bold text-black-600'>{user.name}</li>
+                                        <li className='font-bold text-black-600'>{user.email}</li>
+                                        {role === 'hr' && <>
+                                            <li> <NavLink to='/Dashboard/HR' className={linkClass}>Dashboard</NavLink></li>
+                                            <li><NavLink to='/Dashboard/AssetList' className={linkClass}> Asset List</NavLink></li>
+                                            <li> <NavLink to='/Dashboard/Profile'> Profile</NavLink></li>
+                                            <li> <NavLink to='/Dashboard/AddAssert' className={linkClass}> Add Asset</NavLink> </li>
+                                            <li> <NavLink to='/Dashboard/AllRequiests' className={linkClass}> All Request</NavLink></li>
+                                            <li> <NavLink to='/Dashboard/EmployeeList' className={linkClass}> Employee List</NavLink></li>
                                         </>}
                                         {role === 'employee' && <>
-                                        <li> <NavLink to='/Dashboard/Employee' className={linkClass}>Dashboard</NavLink></li>
-                                        <li><NavLink to='/Dashboard/MyAssets' className={linkClass}> My Assets</NavLink></li>
-                                        <li> <NavLink to='/Dashboard/Profile'> Profile</NavLink></li>
-                                        <li> <NavLink to='/Dashboard/RequestAsset' className={linkClass}> Request Asset</NavLink> </li>
-                                        <li><NavLink to='/Dashboard/myteam' className={linkClass}>My Team</NavLink></li>
+                                            <li> <NavLink to='/Dashboard/Employee' className={linkClass}>Dashboard</NavLink></li>
+                                            <li><NavLink to='/Dashboard/MyAssets' className={linkClass}> My Assets</NavLink></li>
+                                            <li> <NavLink to='/Dashboard/Profile'> Profile</NavLink></li>
+                                            <li> <NavLink to='/Dashboard/RequestAsset' className={linkClass}> Request Asset</NavLink> </li>
+                                            <li><NavLink to='/Dashboard/myteam' className={linkClass}>My Team</NavLink></li>
                                         </>}
                                     </ul>
                                 </div>
