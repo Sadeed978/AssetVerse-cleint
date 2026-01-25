@@ -46,7 +46,7 @@ const Login = () => {
                             <button className="btn btn-neutral mt-4">Log In </button>
                         </fieldset>
                     </form>
-                    <p>If you are new then go to <Link className='text-blue-500' to='/Register'>Register</Link></p>
+                    <p>If you are new then go to <Link className='text-blue-500' to='/HRRegister'>Register As HR</Link> or <Link className='text-blue-500' to='/EmployeeRegister'>Register As Employee</Link></p>
                 </div>
             </div>
 
