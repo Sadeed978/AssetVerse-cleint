@@ -85,7 +85,26 @@ img, svg, video, canvas {
   transition: none;
 }
 
-/* ── Scrollbar styling ──────────────────────────────────────────────────── */
+/* ── Feature block accent backgrounds ───────────────────────────────────── */
+[data-theme="light"] {
+  --feat-1-bg: #e7f0ff;
+  --feat-1-border: #c5d9f7;
+  --feat-2-bg: #f0ebff;
+  --feat-2-border: #d4c5f7;
+  --feat-3-bg: #e6f9ee;
+  --feat-3-border: #b7e8c8;
+}
+[data-theme="dark"] {
+  --feat-1-bg: #1c2b3a;
+  --feat-1-border: #2d4a6b;
+  --feat-2-bg: #251e3a;
+  --feat-2-border: #4a3a6b;
+  --feat-3-bg: #1a2e22;
+  --feat-3-border: #2d5c3e;
+}
+.feat-1 { background-color: var(--feat-1-bg); border-color: var(--feat-1-border); }
+.feat-2 { background-color: var(--feat-2-bg); border-color: var(--feat-2-border); }
+.feat-3 { background-color: var(--feat-3-bg); border-color: var(--feat-3-border); }
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--color-base-300); border-radius: 99px; }

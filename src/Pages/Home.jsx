@@ -86,7 +86,7 @@ const MockAnalytics = () => (
 
 /* ── Feature block — mode.com style two-column ── */
 const FeatureBlock = ({ tag, title, desc, visual, accent, flip }) => (
-  <div className={`rounded-3xl overflow-hidden grid md:grid-cols-2 min-h-[420px] ${accent}`}>
+  <div className={`rounded-3xl overflow-hidden grid md:grid-cols-2 min-h-[420px] text-base-content ${accent}`}>
     <div className={`flex flex-col justify-center p-10 md:p-14 ${flip ? 'md:order-2' : ''}`}>
       <p className="text-xs uppercase tracking-[0.3em] opacity-50 mb-4 font-semibold">{tag}</p>
       <h2 className="text-3xl md:text-4xl font-black leading-tight mb-5 whitespace-pre-line">{title}</h2>
@@ -140,7 +140,7 @@ const Home = () => {
           tag="Asset Tracking"
           title={"Built for\nyour HR team"}
           desc="Monitor every asset from procurement to disposal. Full lifecycle visibility with real-time stock levels and assignment history."
-          accent="bg-[#e7f0ff] dark:bg-[#1c2b3a] text-base-content border border-[#c5d9f7] dark:border-[#2d4a6b]"
+          accent="feat-1 border"
           visual={<MockDashboard />}
         />
 
@@ -149,7 +149,7 @@ const Home = () => {
           tag="Request Workflows"
           title={"And the teams\nyou work with"}
           desc="Employees request assets, HR approves — all tracked in real time. No emails, no follow-ups, no confusion."
-          accent="bg-[#f0ebff] dark:bg-[#251e3a] text-base-content border border-[#d4c5f7] dark:border-[#4a3a6b]"
+          accent="feat-2 border"
           visual={<MockRequest />}
         />
 
@@ -157,7 +157,7 @@ const Home = () => {
           tag="Analytics"
           title={"Real-time\ninsights"}
           desc="Instant charts on asset distribution, request trends, and team utilization. Make data-driven decisions every day."
-          accent="bg-[#e6f9ee] dark:bg-[#1a2e22] text-base-content border border-[#b7e8c8] dark:border-[#2d5c3e]"
+          accent="feat-3 border"
           visual={<MockAnalytics />}
         />
 
