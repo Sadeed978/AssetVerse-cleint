@@ -3,115 +3,117 @@
   themes: light --default, dark --prefersdark;
 }
 
-/* ── Custom light theme — clean, warm white ─────────────────────────────── */
+/* ── Light theme ─────────────────────────────────────────────────────────── */
 [data-theme="light"] {
   --color-base-100: #ffffff;
-  --color-base-200: #f5f5f7;
-  --color-base-300: #e8e8ed;
-  --color-base-content: #1a1a2e;
-
-  --color-primary: #4f46e5;
+  --color-base-200: #f4f6fb;
+  --color-base-300: #e2e8f0;
+  --color-base-content: #0f172a;
+  --color-primary: #6366f1;
   --color-primary-content: #ffffff;
-
-  --color-secondary: #7c3aed;
+  --color-secondary: #8b5cf6;
   --color-secondary-content: #ffffff;
-
-  --color-accent: #0ea5e9;
+  --color-accent: #06b6d4;
   --color-accent-content: #ffffff;
-
-  --color-neutral: #1a1a2e;
+  --color-neutral: #0f172a;
   --color-neutral-content: #ffffff;
-
-  --color-success: #16a34a;
+  --color-success: #10b981;
   --color-success-content: #ffffff;
-
-  --color-warning: #d97706;
+  --color-warning: #f59e0b;
   --color-warning-content: #ffffff;
-
-  --color-error: #dc2626;
+  --color-error: #ef4444;
   --color-error-content: #ffffff;
-
-  --color-info: #0284c7;
+  --color-info: #3b82f6;
   --color-info-content: #ffffff;
-
   --radius-box: 1rem;
   --radius-btn: 0.5rem;
 }
 
-/* ── Custom dark theme — Facebook dark palette ───────────────────────────── */
+/* ── Premium dark theme — deep navy like Dribbble asset dashboards ────────── */
 [data-theme="dark"] {
-  --color-base-100: #242526;
-  --color-base-200: #18191a;
-  --color-base-300: #3a3b3c;
-  --color-base-content: #e4e6eb;
-
-  --color-primary: #2d88ff;
+  --color-base-100: #0d1117;
+  --color-base-200: #161b22;
+  --color-base-300: #21262d;
+  --color-base-content: #c9d1d9;
+  --color-primary: #7c6af7;
   --color-primary-content: #ffffff;
-
   --color-secondary: #a78bfa;
   --color-secondary-content: #ffffff;
-
-  --color-accent: #45bd62;
-  --color-accent-content: #ffffff;
-
-  --color-neutral: #18191a;
-  --color-neutral-content: #e4e6eb;
-
-  --color-success: #45bd62;
+  --color-accent: #22d3ee;
+  --color-accent-content: #0f172a;
+  --color-neutral: #161b22;
+  --color-neutral-content: #c9d1d9;
+  --color-success: #3fb950;
   --color-success-content: #ffffff;
-
-  --color-warning: #f0b429;
-  --color-warning-content: #1c1917;
-
-  --color-error: #fa3e3e;
+  --color-warning: #d29922;
+  --color-warning-content: #ffffff;
+  --color-error: #f85149;
   --color-error-content: #ffffff;
-
-  --color-info: #2d88ff;
+  --color-info: #58a6ff;
   --color-info-content: #ffffff;
-
   --radius-box: 1rem;
   --radius-btn: 0.5rem;
 }
 
-/* ── Global smooth transitions ──────────────────────────────────────────── */
-*, *::before, *::after {
-  transition-property: background-color, border-color, color;
-  transition-duration: 200ms;
-  transition-timing-function: ease;
+/* ── Glassmorphism utility ───────────────────────────────────────────────── */
+.glass-card {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+[data-theme="light"] .glass-card {
+  background: rgba(255,255,255,0.7);
+  border: 1px solid rgba(99,102,241,0.12);
 }
 
-/* Prevent transition on images/svgs */
-img, svg, video, canvas {
-  transition: none;
+/* ── Gradient text ───────────────────────────────────────────────────────── */
+.gradient-text {
+  background: linear-gradient(135deg, #7c6af7 0%, #22d3ee 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
+[data-theme="light"] .gradient-text {
+  background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Glow effects ────────────────────────────────────────────────────────── */
+.glow-primary { box-shadow: 0 0 30px rgba(124,106,247,0.25); }
+.glow-success { box-shadow: 0 0 20px rgba(63,185,80,0.2); }
+.glow-accent  { box-shadow: 0 0 20px rgba(34,211,238,0.2); }
 
 /* ── Feature block accent backgrounds ───────────────────────────────────── */
 [data-theme="light"] {
-  --feat-1-bg: #e7f0ff;
-  --feat-1-border: #c5d9f7;
-  --feat-2-bg: #f0ebff;
-  --feat-2-border: #d4c5f7;
-  --feat-3-bg: #e6f9ee;
-  --feat-3-border: #b7e8c8;
+  --feat-1-bg: #eef2ff; --feat-1-border: #c7d2fe;
+  --feat-2-bg: #f5f3ff; --feat-2-border: #ddd6fe;
+  --feat-3-bg: #ecfdf5; --feat-3-border: #a7f3d0;
 }
 [data-theme="dark"] {
-  --feat-1-bg: #1c2b3a;
-  --feat-1-border: #2d4a6b;
-  --feat-2-bg: #251e3a;
-  --feat-2-border: #4a3a6b;
-  --feat-3-bg: #1a2e22;
-  --feat-3-border: #2d5c3e;
+  --feat-1-bg: #1a1f3a; --feat-1-border: #2d3561;
+  --feat-2-bg: #1e1a3a; --feat-2-border: #3d2d61;
+  --feat-3-bg: #0d2318; --feat-3-border: #1a4a2e;
 }
 .feat-1 { background-color: var(--feat-1-bg); border-color: var(--feat-1-border); }
 .feat-2 { background-color: var(--feat-2-bg); border-color: var(--feat-2-border); }
 .feat-3 { background-color: var(--feat-3-bg); border-color: var(--feat-3-border); }
-::-webkit-scrollbar { width: 6px; height: 6px; }
+
+/* ── Smooth transitions ──────────────────────────────────────────────────── */
+*, *::before, *::after {
+  transition-property: background-color, border-color, color, box-shadow;
+  transition-duration: 200ms;
+  transition-timing-function: ease;
+}
+img, svg, video, canvas { transition: none; }
+
+/* ── Scrollbar ───────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--color-base-300); border-radius: 99px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--color-primary); }
 
-/* ── Selection color ────────────────────────────────────────────────────── */
-::selection {
-  background: var(--color-primary);
-  color: var(--color-primary-content);
-}
+/* ── Selection ───────────────────────────────────────────────────────────── */
+::selection { background: var(--color-primary); color: var(--color-primary-content); }
