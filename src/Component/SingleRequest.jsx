@@ -117,8 +117,8 @@ const SingleRequest = ({ request }) => {
   if (userLoading || affiliationLoading) return <p>Loading...</p>
 
   return (
-    <div className="card p-5 text-black w-96">
-      <div className="card-body bg-gray-300 items-center text-center">
+    <div className="card p-5 w-96">
+      <div className="card-body bg-base-200 items-center text-center rounded-xl">
         <h2 className="card-title">{assetName}</h2>
         <p>Type: {assetType}</p>
         <p>Requester Email: {requesterEmail}</p>

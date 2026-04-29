@@ -65,24 +65,24 @@ const AssetsDetails = () => {
             });
     };
     return (
-        <div className="min-h-screen bg-gray-100 p-8">
+        <div className="min-h-screen bg-base-200 p-8">
             <h2 className="text-2xl font-bold mb-4 text-center">Assets Details</h2>
-            <form onSubmit={handleSubmit(handleRequest)} className="max-w-md  bg-white p-6 rounded shadow mx-auto">
+            <form onSubmit={handleSubmit(handleRequest)} className="max-w-md bg-base-100 p-6 rounded shadow mx-auto">
                 <fieldset className="fieldset">
                     <div className="mb-4">
-                        <label className="block text-gray-700">Asset Name</label>
+                        <label className="block text-base-content/80">Asset Name</label>
                         <input
                             type="text"
-                            className="w-full px-3 py-2 border rounded"
+                            className="w-full px-3 py-2 border border-base-300 rounded bg-base-100 text-base-content"
                             {...register('assetName')}
                             defaultValue={assetsName}
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="block text-gray-700">Asset Type</label>
+                        <label className="block text-base-content/80">Asset Type</label>
                         <input
                             type="text"
-                            className="w-full px-3 py-2 border rounded"
+                            className="w-full px-3 py-2 border border-base-300 rounded bg-base-100 text-base-content"
                             {...register('assetType')} defaultValue={assetsType}
                         />
                     </div>
@@ -97,10 +97,10 @@ const AssetsDetails = () => {
                                 />
                     </div>    
                     <div className="mb-4">
-                        <label className="block text-gray-700">Requester Name</label>
+                        <label className="block text-base-content/80">Requester Name</label>
                         <input
                             type="text"
-                            className="w-full px-3 py-2 border rounded"
+                            className="w-full px-3 py-2 border border-base-300 rounded bg-base-100 text-base-content"
                             {...register('requesterName')}
                             defaultValue={name}
                            
@@ -108,30 +108,30 @@ const AssetsDetails = () => {
                     </div>
 
                     <div className="mb-4">
-                        <label className="block text-gray-700">Requester Email</label>
+                        <label className="block text-base-content/80">Requester Email</label>
                         <input
                             type="email"
-                            className="w-full px-3 py-2 border rounded"
+                            className="w-full px-3 py-2 border border-base-300 rounded bg-base-100 text-base-content"
                             {...register('requesterEmail')}
                             defaultValue={user?.email}
                             
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="block text-gray-700">Company Name</label>
+                        <label className="block text-base-content/80">Company Name</label>
                         <input
                             type="text"
-                            className="w-full px-3 py-2 border rounded"
+                            className="w-full px-3 py-2 border border-base-300 rounded bg-base-100 text-base-content"
                             {...register('companyName')}
                             defaultValue={companyName}
                         />
                     </div>
 
                     <div className="mb-4">
-                        <label className="block text-gray-700">HR Email</label>
+                        <label className="block text-base-content/80">HR Email</label>
                         <input
                             type="email"
-                            className="w-full px-3 py-2 border rounded"
+                            className="w-full px-3 py-2 border border-base-300 rounded bg-base-100 text-base-content"
                             {...register('hrEmail')}
                             defaultValue={email}
                         />
@@ -139,14 +139,14 @@ const AssetsDetails = () => {
 
 
                     <div className="mb-4">
-                        <label className="block text-gray-700">Purchase Date</label>
+                        <label className="block text-base-content/80">Purchase Date</label>
                         <input
                             type="date"
-                            className="w-full px-3 py-2 border rounded"
+                            className="w-full px-3 py-2 border border-base-300 rounded bg-base-100 text-base-content"
                             {...register('purchaseDate',{ required: true }) }
                         />
                     </div>
-                    <button  className="bg-blue-500 text-white px-4 py-2 rounded" > Submit </button>
+                    <button className="bg-blue-500 hover:bg-blue-600 active:scale-95 transition duration-200 text-white px-4 py-2 rounded w-full font-semibold">Submit</button>
                 </fieldset>
             </form>
         </div>

@@ -3,7 +3,7 @@ import React from 'react';
 const Contact = () => {
     return (
         <div>
-            <section className="bg-blue-400 text-center py-12 px-4">
+            <section className="bg-primary text-primary-content text-center py-12 px-4">
       <h2 className="text-3xl font-bold mb-4">
         Ready to Take Control of Your Assets?
       </h2>

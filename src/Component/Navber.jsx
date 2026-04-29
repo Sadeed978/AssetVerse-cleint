@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router';
-import { FaRegUserCircle } from 'react-icons/fa';
+import { FaRegUserCircle, FaSun, FaMoon } from 'react-icons/fa';
 import { use } from 'react';
 import AuthContext from '../contexts/AuthContexts';
 import Logo from './Logo';
@@ -9,7 +9,16 @@ import { toast } from 'react-toastify';
 const Navber = () => {
     const { setUser, user, LogingOut, } = use(AuthContext);
     const [role, setRole] = useState(null);
+    const [darkMode, setDarkMode] = useState(() => {
+        return localStorage.getItem('theme') === 'dark';
+    });
     const linkClass = ({ isActive }) => (isActive ? 'text-blue-500  font-bold' : 'default');
+
+    useEffect(() => {
+        const theme = darkMode ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+    }, [darkMode]);
 
     const link = (<>
         <li><NavLink to="/" className={linkClass}>Home</NavLink></li>
@@ -71,7 +80,19 @@ const Navber = () => {
                     </ul>
                 </div>
                 <div className="navbar-end">
-                    <div className="navbar-end">
+                    <div className="navbar-end gap-2">
+                        {/* Dark mode toggle */}
+                        <button
+                            onClick={() => setDarkMode(prev => !prev)}
+                            className="btn btn-ghost btn-circle"
+                            aria-label="Toggle dark mode"
+                        >
+                            {darkMode ? (
+                                <FaSun className="w-5 h-5 text-yellow-400" />
+                            ) : (
+                                <FaMoon className="w-5 h-5 text-gray-600" />
+                            )}
+                        </button>
                         {user ? (
                             <div className='flex item -end gap-3'>
                                 <div className="dropdown dropdown-start">

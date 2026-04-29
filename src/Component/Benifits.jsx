@@ -67,7 +67,7 @@ const Benifits = () => {
                 }}
             >{benefits.map((benefit, index) => (
                 <SwiperSlide key={index}>
-                    <div className="card bg-base-100 shadow-xl border border-gray-200 p-6">
+                    <div className="card bg-base-100 shadow-xl border border-base-300 p-6">
                         <div className="badge badge-secondary mb-4">{benefit.badge}</div>
                         <h2 className="card-title text-2xl mb-2">{benefit.title}</h2>
                         <div className="badge badge-outline mb-4">{benefit.tag}</div>

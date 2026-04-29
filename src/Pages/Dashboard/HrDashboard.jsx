@@ -114,7 +114,7 @@ const HrDashboard = () => {
 
       <div className="grid md:grid-cols-2 gap-6">
 
-        <div className="bg-white shadow rounded p-4">
+        <div className="bg-base-100 shadow rounded p-4">
           <h3 className="text-xl font-semibold mb-4 text-center">
             Returnable vs Non-returnable Assets
           </h3>
@@ -140,7 +140,7 @@ const HrDashboard = () => {
           </ResponsiveContainer>
         </div>
 
-        <div className="bg-white shadow rounded p-4">
+        <div className="bg-base-100 shadow rounded p-4">
           <h3 className="text-xl font-semibold mb-4 text-center">
             Top Requested Assets (Quantity)
           </h3>

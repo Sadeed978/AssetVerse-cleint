@@ -38,7 +38,7 @@ const AddAssert = () => {
     };
     
     return (
-        <div className="items-center  justify-center min-h-screen bg-gray-100 p-20">
+        <div className="items-center  justify-center min-h-screen bg-base-200 p-20">
             <div className="card bg-base-100  max-w-sm shrink-0 shadow-2xl mx-auto ">
                 <div className="card-body">
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">

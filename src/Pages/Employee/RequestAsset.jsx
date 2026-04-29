@@ -44,8 +44,8 @@ const RequestAsset = () => {
 
     return (
         <div className="max-w-7xl mx-auto px-4">
-            <h2 className="text-4xl text-center text-blue-800 p-4">All Assets</h2>
-            <p className="text-2xl text-center mb-6">Click to request an asset</p>
+            <h2 className="text-4xl text-center text-primary p-4">All Assets</h2>
+            <p className="text-2xl text-center text-base-content/60 mb-6">Click to request an asset</p>
 
            
             <div className="flex flex-wrap gap-4 justify-center mb-8">
@@ -91,10 +91,10 @@ const RequestAsset = () => {
                             </figure>
                             <div className="card-body items-center text-center">
                                 <h2 className="card-title">{request.productName}</h2>
-                                <p className="text-blue-500">
+                                <p className="text-base-content/60">
                                     Product Type: {request.productType}
                                 </p>
-                                <p className="text-blue-500">
+                                <p className="text-base-content/60">
                                     Product Quantity: {request.productQuantity}
                                 </p>
                                 <Link to={`/Dashboard/assetsDetails/${request._id}`}>

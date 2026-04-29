@@ -40,18 +40,18 @@ const MyAssets = () => {
       </h2>
 
       {requests.length === 0 ? (
-        <p className="text-center text-gray-500">No requests found</p>
+        <p className="text-center text-base-content/50">No requests found</p>
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {requests.map(req => (
-            <div key={req._id} className="card bg-white shadow-lg rounded-lg border border-gray-200 hover:shadow-xl transition duration-300">
+            <div key={req._id} className="card bg-base-100 shadow-lg rounded-lg border border-base-300 hover:shadow-xl transition duration-300">
               <div className="card-body p-5">
                 <h3 className="text-xl font-bold mb-2">{req.assetName}</h3>
                 <p><strong>Type:</strong> {req.assetType}</p>
                 <p><strong>Quantity:</strong> {req.quantity}</p>
                 <p>
-                  <strong>Status:</strong> 
-                  <span className={`ml-2 font-semibold ${req.status === 'Accepted' ? 'text-green-600' : req.status === 'Rejected' ? 'text-red-600' : 'text-yellow-600'}`}>
+                  <strong>Status:</strong>
+                  <span className={`ml-2 font-semibold ${req.status === 'Accepted' ? 'text-green-500' : req.status === 'Rejected' ? 'text-red-500' : 'text-yellow-500'}`}>
                     {req.status}
                   </span>
                 </p>

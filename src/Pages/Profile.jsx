@@ -7,7 +7,6 @@ import AuthContext from '../contexts/AuthContexts';
 const Profile = () => {
   const { user } = useContext(AuthContext);
   const userEmail = user.email;
-
   const queryClient = useQueryClient();
 
   const { data: profile, isLoading } = useQuery({
@@ -30,7 +29,11 @@ const Profile = () => {
     photoURL: '',
   });
 
-  if (isLoading) return <p className="text-center mt-10">Loading profile...</p>;
+  if (isLoading) return (
+    <div className="flex items-center justify-center min-h-[60vh]">
+      <span className="loading loading-spinner loading-lg text-primary"></span>
+    </div>
+  );
 
   const handleEditClick = () => {
     setFormData({
@@ -45,8 +48,7 @@ const Profile = () => {
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    if (name === 'photoURL' && files.length > 0) {
-      // convert image to Base64 or URL for preview
+    if (name === 'photoURL' && files && files.length > 0) {
       const reader = new FileReader();
       reader.onloadend = () => {
         setFormData((prev) => ({ ...prev, photoURL: reader.result }));
@@ -72,19 +74,19 @@ const Profile = () => {
   };
 
   return (
-    <div className="bg-gray-100 px-4 py-8 mx-auto min-h-screen">
-      <div className="bg-white shadow-xl rounded-xl w-full max-w-4xl p-8 mx-auto">
+    <div className="bg-base-200 px-4 py-8 mx-auto min-h-screen">
+      <div className="bg-base-100 shadow-xl rounded-xl w-full max-w-4xl p-8 mx-auto">
 
         {/* Profile Header */}
-        <div className="flex flex-col md:flex-row items-center gap-6 border-b pb-6">
-          {formData.photoURL ? (
+        <div className="flex flex-col md:flex-row items-center gap-6 border-b border-base-300 pb-6">
+          {(isEditing ? formData.photoURL : profile.photoURL) ? (
             <img
-              src={formData.photoURL}
+              src={isEditing ? formData.photoURL : profile.photoURL}
               alt="profile"
               className="w-32 h-32 rounded-full object-cover border-4 border-blue-500"
             />
           ) : (
-            <div className="w-32 h-32 rounded-full bg-gray-200 flex items-center justify-center text-7xl text-gray-500 border-4 border-blue-500">
+            <div className="w-32 h-32 rounded-full bg-base-300 flex items-center justify-center text-7xl text-base-content/40 border-4 border-blue-500">
               <CgProfile />
             </div>
           )}
@@ -132,45 +134,40 @@ const Profile = () => {
                 />
                 <div className="flex gap-2 mt-2">
                   <button onClick={handleSave} className="btn btn-primary">Save</button>
-                  <button onClick={() => setIsEditing(false)} className="btn btn-secondary">Cancel</button>
+                  <button onClick={() => setIsEditing(false)} className="btn btn-ghost">Cancel</button>
                 </div>
               </div>
             ) : (
               <>
                 <h2 className="text-3xl font-bold">{profile.displayName || 'Unnamed User'}</h2>
-                <p className="text-gray-500 capitalize text-lg">{profile.role}</p>
-                <p className="text-sm text-gray-400">{profile.email}</p>
+                <p className="text-base-content/50 capitalize text-lg">{profile.role}</p>
+                <p className="text-sm text-base-content/40">{profile.email}</p>
               </>
             )}
           </div>
 
           {!isEditing && (
-            <div>
-              <button onClick={handleEditClick} className="btn btn-neutral">Edit Profile</button>
-            </div>
+            <button onClick={handleEditClick} className="btn btn-neutral">Edit Profile</button>
           )}
         </div>
 
         {/* Profile Details */}
         {!isEditing && (
           <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-gray-50 p-5 rounded-lg">
-              <p className="text-sm text-gray-500">Company Name</p>
+            <div className="bg-base-200 p-5 rounded-lg">
+              <p className="text-sm text-base-content/50">Company Name</p>
               <p className="font-semibold text-lg">{profile.companyName || 'N/A'}</p>
             </div>
-
-            <div className="bg-gray-50 p-5 rounded-lg">
-              <p className="text-sm text-gray-500">Date of Birth</p>
+            <div className="bg-base-200 p-5 rounded-lg">
+              <p className="text-sm text-base-content/50">Date of Birth</p>
               <p className="font-semibold text-lg">{profile.dateOfBirth || 'N/A'}</p>
             </div>
-
-            <div className="bg-gray-50 p-5 rounded-lg">
-              <p className="text-sm text-gray-500">Role</p>
+            <div className="bg-base-200 p-5 rounded-lg">
+              <p className="text-sm text-base-content/50">Role</p>
               <p className="font-semibold text-lg capitalize">{profile.role}</p>
             </div>
-
-            <div className="bg-gray-50 p-5 rounded-lg md:col-span-3">
-              <p className="text-sm text-gray-500">Email Address</p>
+            <div className="bg-base-200 p-5 rounded-lg md:col-span-3">
+              <p className="text-sm text-base-content/50">Email Address</p>
               <p className="font-semibold text-lg break-all">{profile.email}</p>
             </div>
           </div>

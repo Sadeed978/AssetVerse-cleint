@@ -23,16 +23,14 @@ const DashboardLayout = () => {
         }
     }, [user]);
     return (
-        <div>
-            <div>
+        <div className="bg-base-100 min-h-screen flex flex-col">
+            <div className="bg-base-100 shadow-sm px-4 py-2">
                 <Link to='/' className="">
-                <Logo></Logo>
+                    <Logo></Logo>
                 </Link>
-
-
             </div>
-            <div className="flex">
-                <div className="menu p-8 w-50 bg-base-200 text-base-content">
+            <div className="flex flex-1">
+                <div className="menu p-8 w-50 bg-base-200 text-base-content min-h-full">
                    
                     {role === 'hr' && <>
                         <li> <NavLink to='/Dashboard/HR' className={linkClass}>Dashboard</NavLink></li>
@@ -50,12 +48,11 @@ const DashboardLayout = () => {
                         <li><NavLink to='/Dashboard/myteam' className={linkClass}>My Team</NavLink></li>
                     </>}
                 </div>
-                <Outlet></Outlet>
+                <div className="flex-1 bg-base-100">
+                    <Outlet></Outlet>
+                </div>
             </div>
-           
-            <div>
-                <Footer></Footer>
-            </div>
+            <Footer></Footer>
         </div>
     );
 };

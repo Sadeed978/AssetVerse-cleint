@@ -27,7 +27,7 @@ const FAQSection = () => {
   };
 
   return (
-    <section className="bg-white py-16">
+    <section className="bg-base-100 py-16">
       <h2 className="text-3xl font-bold text-center mb-10">
         Frequently Asked Questions
       </h2>
@@ -36,30 +36,26 @@ const FAQSection = () => {
         {faqs.map((faq, index) => (
           <div
             key={index}
-            className="border rounded-xl overflow-hidden shadow-sm"
+            className="border border-base-300 rounded-xl overflow-hidden shadow-sm"
           >
-            {/* Question */}
             <button
               onClick={() => toggleFAQ(index)}
-              className="w-full flex justify-between items-center p-5 bg-gray-50 hover:bg-gray-100 transition"
+              className="w-full flex justify-between items-center p-5 bg-base-200 hover:bg-base-300 transition text-base-content"
             >
-              <span className="font-semibold text-left">
-                {faq.question}
-              </span>
+              <span className="font-semibold text-left">{faq.question}</span>
               {activeIndex === index ? (
-                <FiMinus className="text-xl" />
+                <FiMinus className="text-xl shrink-0" />
               ) : (
-                <FiPlus className="text-xl" />
+                <FiPlus className="text-xl shrink-0" />
               )}
             </button>
 
-            {/* Answer (Slide Animation) */}
             <div
               className={`transition-all duration-300 ease-in-out ${
                 activeIndex === index
                   ? "max-h-40 p-5 opacity-100"
                   : "max-h-0 p-0 opacity-0"
-              } overflow-hidden bg-white text-gray-600`}
+              } overflow-hidden bg-base-100 text-base-content/70`}
             >
               {faq.answer}
             </div>
