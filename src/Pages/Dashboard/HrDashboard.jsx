@@ -6,11 +6,11 @@ import AuthContext from '../../contexts/AuthContexts';
 
 const PIE_COLORS = ['#7c6af7','#22d3ee','#3fb950','#f59e0b'];
 
-const KpiCard = ({ icon, label, value, sub, color, bg }) => (
-  <div className={`glass-card border border-base-300 rounded-2xl p-5 flex flex-col gap-3 hover:border-primary/40 transition-all duration-300`}>
-    <div className={`w-10 h-10 rounded-xl ${bg} flex items-center justify-center text-xl`}>{icon}</div>
+const KpiCard = ({ icon, label, value, sub, colorClass, bgClass }) => (
+  <div className="glass-card border border-base-300 rounded-2xl p-5 flex flex-col gap-3 hover:border-primary/40 transition-all duration-300">
+    <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-xl ${bgClass}`}>{icon}</div>
     <div>
-      <p className={`text-3xl font-black ${color}`}>{value}</p>
+      <p className={`text-3xl font-black ${colorClass}`}>{value}</p>
       <p className="text-xs text-base-content/40 uppercase tracking-wide mt-0.5">{label}</p>
       {sub && <p className="text-xs text-base-content/30 mt-1">{sub}</p>}
     </div>
@@ -48,10 +48,10 @@ const HrDashboard = () => {
   }));
 
   const kpis = [
-    { icon:'👥', label:'Employees',    value: employees.length, color:'text-primary',   bg:'bg-primary/15',   sub:'Under your HR'     },
-    { icon:'📦', label:'Total Assets', value: assets.length,    color:'text-accent',    bg:'bg-accent/15',    sub:'In inventory'      },
-    { icon:'✅', label:'Accepted',     value: accepted,         color:'text-success',   bg:'bg-success/15',   sub:'Approved requests'  },
-    { icon:'⏳', label:'Pending',      value: pending,          color:'text-warning',   bg:'bg-warning/15',   sub:'Awaiting review'   },
+    { icon:'👥', label:'Employees',    value: employees.length, colorClass:'text-primary',   bgClass:'bg-primary/15',   sub:'Under your HR'     },
+    { icon:'📦', label:'Total Assets', value: assets.length,    colorClass:'text-accent',    bgClass:'bg-accent/15',    sub:'In inventory'      },
+    { icon:'✅', label:'Accepted',     value: accepted,         colorClass:'text-success',   bgClass:'bg-success/15',   sub:'Approved requests'  },
+    { icon:'⏳', label:'Pending',      value: pending,          colorClass:'text-warning',   bgClass:'bg-warning/15',   sub:'Awaiting review'   },
   ];
 
   return (
@@ -75,7 +75,6 @@ const HrDashboard = () => {
         </div>
       </div>
 
-      {/* KPI cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         {kpis.map(k=><KpiCard key={k.label} {...k}/>)}
       </div>
@@ -89,18 +88,19 @@ const HrDashboard = () => {
           <p className="text-xs text-base-content/40 mb-4">Returnable vs Non-returnable</p>
           <ResponsiveContainer width="100%" height={220}>
             <PieChart>
-              <Pie data={pieData} dataKey="value" nameKey="name" outerRadius={85} innerRadius={45} paddingAngle={4} label={({name,value})=>`${name}: ${value}`} labelLine={false}>
+              <Pie data={pieData} dataKey="value" nameKey="name" outerRadius={85} innerRadius={45} paddingAngle={4}>
                 {pieData.map((_,i)=><Cell key={i} fill={PIE_COLORS[i]}/>)}
               </Pie>
               <Tooltip contentStyle={{ background:'var(--color-base-100)', border:'1px solid var(--color-base-300)', borderRadius:'12px', fontSize:'12px' }}/>
             </PieChart>
           </ResponsiveContainer>
-          <div className="flex justify-center gap-5 mt-2">
+          <div className="flex justify-center gap-6 mt-3">
             {pieData.map((d,i)=>(
-              <span key={d.name} className="flex items-center gap-1.5 text-xs text-base-content/50">
-                <span className="w-2.5 h-2.5 rounded-full inline-block" style={{background:PIE_COLORS[i]}}/>
-                {d.name}
-              </span>
+              <div key={d.name} className="flex items-center gap-2">
+                <span className="w-3 h-3 rounded-full shrink-0" style={{background:PIE_COLORS[i]}}/>
+                <span className="text-xs text-base-content/60">{d.name}</span>
+                <span className="text-xs font-bold text-base-content">{d.value}</span>
+              </div>
             ))}
           </div>
         </div>
