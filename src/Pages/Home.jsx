@@ -1,181 +1,197 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Link, useNavigate } from 'react-router';
-import Banner from '../Component/Banner';
-import AboutSection from '../Component/AboutSection';
 import Pacages from '../Component/Pacages';
-import Benifits from '../Component/Benifits';
-import Contact from '../Component/ExtraPart/Contact';
-import AboutUs from './Aboutus';
 import FAQSection from '../Component/ExtraPart/Faq2';
+import { useNavigate as useNav } from 'react-router';
 
-const pacagePromise = fetch('https://asset-verse-server-phi.vercel.app/pacages')
-    .then(res => res.json());
+const pacagePromise = fetch('https://asset-verse-server-phi.vercel.app/pacages').then(r => r.json());
 
-const CATEGORY_ROUTES = {
-    Electronics: '/Dashboard/RequestAsset',
-    Furniture: '/Dashboard/RequestAsset',
-    'Office Tools': '/Dashboard/RequestAsset',
-    TELIVISION: '/Dashboard/RequestAsset',
-    Resources: '/Dashboard/RequestAsset',
-};
+/* ── tiny reusable divider ── */
+const Divider = () => <div className="border-t border-base-300 w-full" />;
+
+/* ── stat item ── */
+const Stat = ({ value, label }) => (
+  <div className="flex flex-col gap-1">
+    <span className="text-5xl md:text-6xl font-black tracking-tight text-base-content">{value}</span>
+    <span className="text-sm text-base-content/40 uppercase tracking-widest">{label}</span>
+  </div>
+);
+
+/* ── feature row ── */
+const FeatureRow = ({ num, title, desc }) => (
+  <div className="flex items-start gap-6 py-7 border-b border-base-300 group hover:bg-base-200/40 px-2 rounded-xl transition-colors duration-200">
+    <span className="text-xs text-base-content/30 font-mono mt-1 w-6 shrink-0">{num}</span>
+    <div className="flex-1">
+      <h3 className="font-bold text-lg text-base-content mb-1">{title}</h3>
+      <p className="text-base-content/50 text-sm leading-relaxed">{desc}</p>
+    </div>
+    <span className="text-base-content/20 group-hover:text-primary group-hover:translate-x-1 transition-all text-xl">→</span>
+  </div>
+);
+
+/* ── category pill ── */
+const CatPill = ({ icon, label }) => (
+  <Link to="/Dashboard/RequestAsset"
+    className="flex items-center gap-3 px-5 py-3 rounded-full border border-base-300 bg-base-100 hover:border-primary hover:text-primary hover:bg-primary/5 transition-all duration-200 text-sm font-medium text-base-content/70 group">
+    <span className="text-lg">{icon}</span>
+    <span>{label}</span>
+    <span className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity text-xs">→</span>
+  </Link>
+);
 
 const Home = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    return (
-        <div className="bg-base-100">
-            {/* Banner */}
-            <Banner />
+  return (
+    <div className="bg-base-100 text-base-content">
 
-            {/* About / Key Features */}
-            <div className="bg-base-100">
-                <AboutSection />
-            </div>
-
-            {/* Packages */}
-            <div className="bg-base-200">
-                <Pacages pacagePromise={pacagePromise} />
-            </div>
-
-            {/* Stats */}
-            <div className="bg-base-200 py-12 px-4 text-center">
-                <div className="stats stats-vertical lg:stats-horizontal shadow bg-base-100 w-full max-w-4xl mx-auto">
-                    <div className="stat">
-                        <div className="stat-title text-xl text-primary">Trust AssetVerse</div>
-                        <div className="stat-value">100+</div>
-                        <div className="stat-desc text-lg">Companies</div>
-                    </div>
-                    <div className="stat">
-                        <div className="stat-title text-xl text-primary">Data Accuracy & System Reliability</div>
-                        <div className="stat-value">99.9%</div>
-                    </div>
-                    <div className="stat">
-                        <div className="stat-title text-xl text-primary">Asset Requests Processed</div>
-                        <div className="stat-value">1,200+</div>
-                        <div className="stat-desc text-lg">↘︎ 90 (14%)</div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Contact CTA */}
-            <div className="bg-base-100 px-4 my-12">
-                <Contact />
-            </div>
-
-            {/* About Us */}
-            <div className="bg-base-200">
-                <AboutUs />
-            </div>
-
-            {/* Asset Categories */}
-            <section className="bg-base-100 py-16 max-w-7xl mx-auto px-4">
-                <h2 className="text-3xl font-bold text-center mb-10">Asset Categories</h2>
-                <div className="grid md:grid-cols-5 gap-4">
-                    {["Electronics", "Furniture", "Office Tools", "TELIVISION", "Resources"].map(
-                        (cat, i) => (
-                            <Link
-                                key={i}
-                                to={CATEGORY_ROUTES[cat]}
-                                className="bg-base-200 p-4 rounded shadow text-center hover:bg-base-300 hover:shadow-md transition duration-200 cursor-pointer font-medium text-base-content"
-                            >
-                                {cat}
-                            </Link>
-                        )
-                    )}
-                </div>
-            </section>
-
-            {/* Why Choose AssetVerse */}
-            <section className="bg-base-200 py-16">
-                <h2 className="text-3xl font-bold text-center mb-10">
-                    Why Choose AssetVerse
-                </h2>
-                <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto px-4">
-                    {[
-                        "Simple & Intuitive UI",
-                        "Real-time Insights",
-                        "Scalable System",
-                    ].map((item, i) => (
-                        <div key={i} className="bg-base-100 p-6 rounded-xl shadow">
-                            <h3 className="font-semibold mb-2">{item}</h3>
-                            <p className="text-base-content/60">
-                                Designed for modern organizations and teams.
-                            </p>
-                        </div>
-                    ))}
-                </div>
-            </section>
-
-            {/* FAQ */}
-            <section className="bg-base-100 py-4">
-                <FAQSection />
-            </section>
-
-            {/* Testimonials */}
-            <section className="bg-base-200 py-20">
-                <h2 className="text-4xl font-bold text-center mb-12">
-                    What People Say About Us
-                </h2>
-                <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto px-4">
-
-                    <div className="bg-base-100 p-8 rounded-2xl shadow-md hover:shadow-xl transition duration-300 transform hover:-translate-y-1 border-t-4 border-blue-500">
-                        <p className="text-base-content/70 italic mb-6">
-                            "AssetVerse reduced our asset tracking workload drastically. The dashboard
-                            gives us instant visibility and control."
-                        </p>
-                        <div className="flex items-center gap-4">
-                            <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center font-bold text-primary">
-                                HR
-                            </div>
-                            <div>
-                                <p className="font-semibold">HR Manager</p>
-                                <span className="text-sm text-base-content/50 bg-base-200 px-2 py-0.5 rounded">
-                                    Human Resources
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="bg-base-100 p-8 rounded-2xl shadow-md hover:shadow-xl transition duration-300 transform hover:-translate-y-1 border-t-4 border-green-500">
-                        <p className="text-base-content/70 italic mb-6">
-                            "Requesting assets is now transparent and fast. I always know the status
-                            of my requests without following up."
-                        </p>
-                        <div className="flex items-center gap-4">
-                            <div className="w-12 h-12 rounded-full bg-success/20 flex items-center justify-center font-bold text-success">
-                                EM
-                            </div>
-                            <div>
-                                <p className="font-semibold">Employee</p>
-                                <span className="text-sm text-base-content/50 bg-base-200 px-2 py-0.5 rounded">
-                                    Team Member
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </section>
-
-            {/* Benefits slider */}
-            <div className="bg-base-100 py-12 px-4">
-                <Benifits />
-            </div>
-
-            {/* Call to Action */}
-            <section className="py-16 text-center bg-neutral text-neutral-content">
-                <h2 className="text-3xl font-bold mb-4">
-                    Ready to Manage Assets Smarter?
-                </h2>
-                <button
-                    onClick={() => navigate('/HRRegister')}
-                    className="bg-primary hover:bg-primary/80 active:scale-95 transition duration-200 px-6 py-2 rounded-lg font-semibold text-primary-content"
-                >
-                    Start Now
-                </button>
-            </section>
+      {/* ── HERO ─────────────────────────────────────────────────────────── */}
+      <section className="max-w-5xl mx-auto px-6 pt-24 pb-20">
+        <p className="text-xs uppercase tracking-[0.3em] text-primary mb-6 font-medium">
+          Asset Management Platform
+        </p>
+        <h1 className="text-5xl md:text-7xl font-black leading-[1.05] tracking-tight mb-8 text-base-content">
+          Manage assets.<br />
+          <span className="text-base-content/30">Smarter.</span>
+        </h1>
+        <p className="text-base-content/50 text-lg md:text-xl max-w-xl leading-relaxed mb-10">
+          AssetVerse helps organizations track, allocate, and manage company
+          assets — with full visibility for HR and employees.
+        </p>
+        <div className="flex flex-wrap gap-3">
+          <button onClick={() => navigate('/HRRegister')}
+            className="btn btn-primary rounded-full px-8 text-base">
+            Get Started →
+          </button>
+          <button onClick={() => navigate('/Login')}
+            className="btn btn-ghost rounded-full px-8 text-base border border-base-300 hover:border-primary">
+            Sign In
+          </button>
         </div>
-    );
+      </section>
+
+      <Divider />
+
+      {/* ── STATS ────────────────────────────────────────────────────────── */}
+      <section className="max-w-5xl mx-auto px-6 py-16">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-10">
+          <Stat value="100+"   label="Companies trust us"          />
+          <Stat value="99.9%"  label="System reliability"          />
+          <Stat value="1,200+" label="Asset requests processed"     />
+        </div>
+      </section>
+
+      <Divider />
+
+      {/* ── FEATURES ─────────────────────────────────────────────────────── */}
+      <section className="max-w-5xl mx-auto px-6 py-16">
+        <div className="flex items-end justify-between mb-2">
+          <p className="text-xs uppercase tracking-[0.3em] text-base-content/40">What we offer</p>
+        </div>
+        <h2 className="text-3xl md:text-4xl font-black mb-8 tracking-tight">
+          Everything you need<br />to run asset ops.
+        </h2>
+        <div>
+          <FeatureRow num="01" title="Comprehensive Asset Tracking"
+            desc="Monitor every asset from procurement to disposal with complete lifecycle visibility." />
+          <FeatureRow num="02" title="Role-Based Access"
+            desc="HR managers and employees each get a tailored dashboard with the right permissions." />
+          <FeatureRow num="03" title="Request & Approval Workflows"
+            desc="Employees request assets, HR approves — all tracked in real time with status updates." />
+          <FeatureRow num="04" title="Real-time Analytics"
+            desc="Instant charts on asset distribution, request trends, and team utilization." />
+          <FeatureRow num="05" title="Secure & Scalable"
+            desc="Role-based auth, encrypted data, built to scale from 5 to 5,000 employees." />
+        </div>
+      </section>
+
+      <Divider />
+
+      {/* ── CATEGORIES ───────────────────────────────────────────────────── */}
+      <section className="max-w-5xl mx-auto px-6 py-16">
+        <p className="text-xs uppercase tracking-[0.3em] text-base-content/40 mb-3">Browse by category</p>
+        <h2 className="text-3xl md:text-4xl font-black mb-8 tracking-tight">Asset categories</h2>
+        <div className="flex flex-wrap gap-3">
+          <CatPill icon="💻" label="Electronics"  />
+          <CatPill icon="🪑" label="Furniture"    />
+          <CatPill icon="🖨️" label="Office Tools" />
+          <CatPill icon="📺" label="Television"   />
+          <CatPill icon="📦" label="Resources"    />
+        </div>
+      </section>
+
+      <Divider />
+
+      {/* ── PACKAGES ─────────────────────────────────────────────────────── */}
+      <section className="max-w-5xl mx-auto px-6 py-16">
+        <p className="text-xs uppercase tracking-[0.3em] text-base-content/40 mb-3">Pricing</p>
+        <h2 className="text-3xl md:text-4xl font-black mb-10 tracking-tight">Simple plans,<br />no surprises.</h2>
+        <Suspense fallback={
+          <div className="flex justify-center py-12">
+            <span className="loading loading-spinner loading-lg text-primary" />
+          </div>
+        }>
+          <Pacages pacagePromise={pacagePromise} />
+        </Suspense>
+      </section>
+
+      <Divider />
+
+      {/* ── TESTIMONIALS ─────────────────────────────────────────────────── */}
+      <section className="max-w-5xl mx-auto px-6 py-16">
+        <p className="text-xs uppercase tracking-[0.3em] text-base-content/40 mb-3">Testimonials</p>
+        <h2 className="text-3xl md:text-4xl font-black mb-10 tracking-tight">What people say.</h2>
+        <div className="grid md:grid-cols-2 gap-6">
+          {[
+            { quote: '"AssetVerse reduced our asset tracking workload drastically. The dashboard gives us instant visibility and control."', name: 'HR Manager', role: 'Human Resources', init: 'HR', color: 'bg-primary/15 text-primary' },
+            { quote: '"Requesting assets is now transparent and fast. I always know the status of my requests without following up."',       name: 'Employee',   role: 'Team Member',      init: 'EM', color: 'bg-success/15 text-success' },
+          ].map(({ quote, name, role, init, color }) => (
+            <div key={name} className="border border-base-300 rounded-2xl p-7 hover:border-primary/40 transition-colors duration-300">
+              <p className="text-base-content/60 text-base leading-relaxed mb-6 italic">{quote}</p>
+              <div className="flex items-center gap-3">
+                <div className={`w-10 h-10 rounded-full ${color} flex items-center justify-center font-bold text-sm`}>{init}</div>
+                <div>
+                  <p className="font-semibold text-sm">{name}</p>
+                  <p className="text-xs text-base-content/40">{role}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <Divider />
+
+      {/* ── FAQ ──────────────────────────────────────────────────────────── */}
+      <section className="max-w-5xl mx-auto px-6 py-16">
+        <FAQSection />
+      </section>
+
+      <Divider />
+
+      {/* ── CTA ──────────────────────────────────────────────────────────── */}
+      <section className="max-w-5xl mx-auto px-6 py-24 text-center">
+        <p className="text-xs uppercase tracking-[0.3em] text-base-content/40 mb-4">Get started today</p>
+        <h2 className="text-4xl md:text-6xl font-black tracking-tight mb-6 text-base-content">
+          Ready to manage<br />assets smarter?
+        </h2>
+        <p className="text-base-content/40 mb-10 max-w-md mx-auto">
+          Join 100+ companies already using AssetVerse to streamline their operations.
+        </p>
+        <div className="flex flex-wrap gap-3 justify-center">
+          <button onClick={() => navigate('/HRRegister')}
+            className="btn btn-primary rounded-full px-10 text-base">
+            Start as HR →
+          </button>
+          <button onClick={() => navigate('/EmployeeRegister')}
+            className="btn btn-ghost rounded-full px-10 text-base border border-base-300 hover:border-primary">
+            Join as Employee
+          </button>
+        </div>
+      </section>
+
+    </div>
+  );
 };
 
 export default Home;
