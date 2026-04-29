@@ -1,161 +1,146 @@
 import React, { use } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import {
-  PieChart,
-  Pie,
-  Cell,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer
-} from 'recharts';
+import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import AuthContext from '../../contexts/AuthContexts';
 
-const COLORS = {
-  Returnable: 'rgb(34,197,94)',        
-  'Non-returnable': 'rgb(239,68,68)',  
-  Bar: 'rgb(59,130,246)'               
-};
+const PIE_COLORS = ['#22c55e', '#ef4444'];
 
 const HrDashboard = () => {
   const { user } = use(AuthContext);
   const hrEmail = user.email;
 
-  
-  const { data: assets = [], isLoading: assetsLoading } = useQuery({
-    queryKey: ['hrAssets', hrEmail],
-    enabled: !!hrEmail,
-    queryFn: async () => {
-      const res = await axios.get(
-        `https://asset-verse-server-phi.vercel.app/assets/hr/${hrEmail}`
-      );
-      return res.data;
-    },
+  const { data: assets = [], isLoading: aL } = useQuery({
+    queryKey: ['hrAssets', hrEmail], enabled: !!hrEmail,
+    queryFn: async () => (await axios.get(`https://asset-verse-server-phi.vercel.app/assets/hr/${hrEmail}`)).data,
+  });
+  const { data: requests = [], isLoading: rL } = useQuery({
+    queryKey: ['hrRequests', hrEmail], enabled: !!hrEmail,
+    queryFn: async () => (await axios.get(`https://asset-verse-server-phi.vercel.app/requests/${hrEmail}`)).data,
+  });
+  const { data: employees = [], isLoading: eL } = useQuery({
+    queryKey: ['hrEmployees', hrEmail], enabled: !!hrEmail,
+    queryFn: async () => (await axios.get(`https://asset-verse-server-phi.vercel.app/employeeAffiliation/hr/${hrEmail}`)).data,
   });
 
-  
-  const { data: requests = [], isLoading: reqLoading } = useQuery({
-    queryKey: ['hrRequests', hrEmail],
-    enabled: !!hrEmail,
-    queryFn: async () => {
-      const res = await axios.get(
-        `https://asset-verse-server-phi.vercel.app/requests/${hrEmail}`
-      );
-      return res.data;
-    },
-  });
+  if (aL || rL || eL) return (
+    <div className="flex items-center justify-center min-h-[60vh]">
+      <span className="loading loading-spinner loading-lg text-primary" />
+    </div>
+  );
 
-  const { data: employees = [], isLoading: empLoading } = useQuery({
-    queryKey: ['hrEmployees', hrEmail],
-    enabled: !!hrEmail,
-    queryFn: async () => {
-      const res = await axios.get(
-        `https://asset-verse-server-phi.vercel.app/employeeAffiliation/hr/${hrEmail}`
-      );
-      return res.data;
-    },
-  });
+  const returnable    = assets.filter(a => a.productType === 'Returnable').length;
+  const nonReturnable = assets.filter(a => a.productType === 'Non-returnable').length;
+  const pieData = [{ name: 'Returnable', value: returnable }, { name: 'Non-returnable', value: nonReturnable }];
 
-  if (assetsLoading || reqLoading || empLoading) {
-    return <p className="text-center">Loading HR dashboard...</p>;
-  }
+  const reqMap = {};
+  requests.forEach(r => { reqMap[r.assetName] = (reqMap[r.assetName] || 0) + (r.productQuantity || 0); });
+  const barData = Object.entries(reqMap).map(([assetName, totalQuantity]) => ({ assetName, totalQuantity }))
+    .sort((a, b) => b.totalQuantity - a.totalQuantity).slice(0, 5);
 
-  const returnableCount = assets.filter(
-    asset => asset.productType === 'Returnable'
-  ).length;
+  const pending  = requests.filter(r => r.status === 'pending').length;
+  const accepted = requests.filter(r => r.status === 'Accepted').length;
 
-  const nonReturnableCount = assets.filter(
-    asset => asset.productType === 'Non-returnable'
-  ).length;
-
-  const pieData = [
-    { name: 'Returnable', value: returnableCount },
-    { name: 'Non-returnable', value: nonReturnableCount },
+  const statCards = [
+    { icon: '👥', label: 'Employees',     value: employees.length, color: 'text-primary',   bg: 'bg-primary/10'   },
+    { icon: '📦', label: 'Total Assets',  value: assets.length,    color: 'text-success',   bg: 'bg-success/10'   },
+    { icon: '📋', label: 'Requests',      value: requests.length,  color: 'text-warning',   bg: 'bg-warning/10'   },
+    { icon: '✅', label: 'Accepted',      value: accepted,         color: 'text-info',      bg: 'bg-info/10'      },
+    { icon: '⏳', label: 'Pending',       value: pending,          color: 'text-error',     bg: 'bg-error/10'     },
   ];
 
-  const assetRequestMap = {};
-
-  requests.forEach(req => {
-    const name = req.assetName;
-    const qty = (req.productQuantity) || 0;
-
-    assetRequestMap[name] =
-      (assetRequestMap[name] || 0) + qty;
-  });
-
-  const barData = Object.entries(assetRequestMap)
-    .map(([assetName, totalQuantity]) => ({
-      assetName,
-      totalQuantity,
-    }))
-    .sort((a, b) => b.totalQuantity - a.totalQuantity)
-    .slice(0, 5); // Top 5 requested assets
-
-
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6">
-      <h2 className="text-3xl font-bold text-center mb-8">
-        HR Analytics Dashboard
-      </h2>
+    <div className="min-h-screen bg-base-200 p-6">
 
-      <div className="stats shadow mb-8">
-        <div className="stat">
-          <div className="stat-figure text-blue-500 text-3xl">👥</div>
-          <div className="stat-title">Total Employees</div>
-          <div className="stat-value text-blue-500">
-            {employees.length}
-          </div>
-          <div className="stat-desc">Under your HR</div>
+      {/* Header */}
+      <div className="mb-8 flex items-center gap-4">
+        {user.photoURL
+          ? <img src={user.photoURL} className="w-14 h-14 rounded-full ring-4 ring-primary object-cover" alt="" />
+          : <div className="w-14 h-14 rounded-full bg-primary/20 flex items-center justify-center text-2xl font-bold text-primary">
+              {(user.displayName || user.email)?.[0]?.toUpperCase()}
+            </div>
+        }
+        <div>
+          <h1 className="text-2xl font-extrabold">HR Dashboard</h1>
+          <p className="text-base-content/50 text-sm">{user.displayName || user.email}</p>
         </div>
       </div>
 
+      {/* Stat cards */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
+        {statCards.map(({ icon, label, value, color, bg }) => (
+          <div key={label} className="bg-base-100 border border-base-300 rounded-2xl p-4 flex flex-col items-center gap-2 shadow-sm hover:shadow-md transition">
+            <div className={`w-12 h-12 rounded-full ${bg} flex items-center justify-center text-2xl`}>{icon}</div>
+            <p className={`text-2xl font-extrabold ${color}`}>{value}</p>
+            <p className="text-xs text-base-content/50 uppercase tracking-wide">{label}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Charts */}
       <div className="grid md:grid-cols-2 gap-6">
 
-        <div className="bg-base-100 shadow rounded p-4">
-          <h3 className="text-xl font-semibold mb-4 text-center">
-            Returnable vs Non-returnable Assets
-          </h3>
-
-          <ResponsiveContainer width="100%" height={300}>
+        <div className="bg-base-100 border border-base-300 rounded-2xl p-6 shadow-sm">
+          <h3 className="font-bold text-base mb-1">Asset Types</h3>
+          <p className="text-xs text-base-content/40 mb-4">Returnable vs Non-returnable</p>
+          <ResponsiveContainer width="100%" height={260}>
             <PieChart>
-              <Pie
-                data={pieData}
-                dataKey="value"
-                nameKey="name"
-                outerRadius={110}
-                label
-              >
-                {pieData.map((entry, index) => (
-                  <Cell
-                    key={index}
-                    fill={COLORS[entry.name]}
-                  />
-                ))}
+              <Pie data={pieData} dataKey="value" nameKey="name" outerRadius={100} innerRadius={50} paddingAngle={4} label={({ name, value }) => `${name}: ${value}`}>
+                {pieData.map((_, i) => <Cell key={i} fill={PIE_COLORS[i]} />)}
               </Pie>
               <Tooltip />
             </PieChart>
           </ResponsiveContainer>
+          <div className="flex justify-center gap-6 mt-2">
+            <span className="flex items-center gap-1 text-xs"><span className="w-3 h-3 rounded-full bg-green-500 inline-block" />Returnable</span>
+            <span className="flex items-center gap-1 text-xs"><span className="w-3 h-3 rounded-full bg-red-500 inline-block" />Non-returnable</span>
+          </div>
         </div>
 
-        <div className="bg-base-100 shadow rounded p-4">
-          <h3 className="text-xl font-semibold mb-4 text-center">
-            Top Requested Assets (Quantity)
-          </h3>
-
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={barData}>
-              <XAxis dataKey="assetName" />
-              <YAxis />
+        <div className="bg-base-100 border border-base-300 rounded-2xl p-6 shadow-sm">
+          <h3 className="font-bold text-base mb-1">Top Requested Assets</h3>
+          <p className="text-xs text-base-content/40 mb-4">By total quantity requested</p>
+          <ResponsiveContainer width="100%" height={260}>
+            <BarChart data={barData} barSize={32}>
+              <XAxis dataKey="assetName" tick={{ fontSize: 11 }} />
+              <YAxis tick={{ fontSize: 11 }} />
               <Tooltip />
-              <Bar dataKey="totalQuantity" fill={COLORS.Bar} />
+              <Bar dataKey="totalQuantity" fill="#6366f1" radius={[6, 6, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
 
       </div>
+
+      {/* Recent requests table */}
+      {requests.length > 0 && (
+        <div className="bg-base-100 border border-base-300 rounded-2xl p-6 shadow-sm mt-6">
+          <h3 className="font-bold text-base mb-4">Recent Requests</h3>
+          <div className="overflow-x-auto">
+            <table className="table table-sm">
+              <thead>
+                <tr className="text-base-content/50 text-xs uppercase">
+                  <th>Asset</th><th>Requester</th><th>Date</th><th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {requests.slice(0, 5).map(r => (
+                  <tr key={r._id} className="hover:bg-base-200 transition">
+                    <td className="font-medium">{r.assetName}</td>
+                    <td className="text-base-content/60 text-sm">{r.requesterEmail}</td>
+                    <td className="text-base-content/50 text-xs">{r.requestDate}</td>
+                    <td>
+                      <span className={`badge badge-sm ${r.status === 'Accepted' ? 'badge-success' : r.status === 'pending' ? 'badge-warning' : 'badge-error'}`}>
+                        {r.status}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
