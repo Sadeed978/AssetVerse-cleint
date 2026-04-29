@@ -38,36 +38,36 @@
   --radius-btn: 0.5rem;
 }
 
-/* ── Custom dark theme — deep calm dark like 099.supply ─────────────────── */
+/* ── Custom dark theme — Facebook dark palette ───────────────────────────── */
 [data-theme="dark"] {
-  --color-base-100: #141414;
-  --color-base-200: #1c1c1c;
-  --color-base-300: #262626;
-  --color-base-content: #e8e8e8;
+  --color-base-100: #242526;
+  --color-base-200: #18191a;
+  --color-base-300: #3a3b3c;
+  --color-base-content: #e4e6eb;
 
-  --color-primary: #6366f1;
+  --color-primary: #2d88ff;
   --color-primary-content: #ffffff;
 
   --color-secondary: #a78bfa;
   --color-secondary-content: #ffffff;
 
-  --color-accent: #38bdf8;
-  --color-accent-content: #0f172a;
+  --color-accent: #45bd62;
+  --color-accent-content: #ffffff;
 
-  --color-neutral: #262626;
-  --color-neutral-content: #e8e8e8;
+  --color-neutral: #18191a;
+  --color-neutral-content: #e4e6eb;
 
-  --color-success: #22c55e;
-  --color-success-content: #052e16;
+  --color-success: #45bd62;
+  --color-success-content: #ffffff;
 
-  --color-warning: #f59e0b;
+  --color-warning: #f0b429;
   --color-warning-content: #1c1917;
 
-  --color-error: #f87171;
-  --color-error-content: #1c0a0a;
+  --color-error: #fa3e3e;
+  --color-error-content: #ffffff;
 
-  --color-info: #38bdf8;
-  --color-info-content: #0c1a2e;
+  --color-info: #2d88ff;
+  --color-info-content: #ffffff;
 
   --radius-box: 1rem;
   --radius-btn: 0.5rem;

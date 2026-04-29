@@ -6,26 +6,95 @@ import FAQSection from '../Component/ExtraPart/Faq2';
 
 const pacagePromise = fetch('https://asset-verse-server-phi.vercel.app/pacages').then(r => r.json());
 
-/* ── tiny reusable divider ── */
 const Divider = () => <div className="border-t border-base-300 w-full" />;
 
-/* ── stat item ── */
-const Stat = ({ value, label }) => (
-  <div className="flex flex-col gap-1">
-    <span className="text-5xl md:text-6xl font-black tracking-tight text-base-content">{value}</span>
-    <span className="text-sm text-base-content/40 uppercase tracking-widest">{label}</span>
+/* ── Mock UI card shown inside feature panels ── */
+const MockDashboard = () => (
+  <div className="bg-base-100 border border-base-300 rounded-2xl p-5 shadow-2xl w-full max-w-sm">
+    <div className="flex items-center justify-between mb-4">
+      <span className="text-xs font-bold uppercase tracking-widest text-base-content/40">Asset Overview</span>
+      <span className="badge badge-primary badge-sm">Live</span>
+    </div>
+    {[
+      { label: 'Laptop',      qty: 10, pct: 70, color: 'bg-primary'   },
+      { label: 'Headphones',  qty: 14, pct: 90, color: 'bg-secondary' },
+      { label: 'Router',      qty: 7,  pct: 45, color: 'bg-success'   },
+      { label: 'Office Chair',qty: 3,  pct: 20, color: 'bg-warning'   },
+    ].map(({ label, qty, pct, color }) => (
+      <div key={label} className="mb-3">
+        <div className="flex justify-between text-xs mb-1">
+          <span className="text-base-content/70 font-medium">{label}</span>
+          <span className="text-base-content/40">{qty} units</span>
+        </div>
+        <div className="h-1.5 bg-base-300 rounded-full overflow-hidden">
+          <div className={`h-full ${color} rounded-full`} style={{ width: `${pct}%` }} />
+        </div>
+      </div>
+    ))}
   </div>
 );
 
-/* ── feature row ── */
-const FeatureRow = ({ num, title, desc }) => (
-  <div className="flex items-start gap-6 py-7 border-b border-base-300 group hover:bg-base-200/40 px-2 rounded-xl transition-colors duration-200">
-    <span className="text-xs text-base-content/30 font-mono mt-1 w-6 shrink-0">{num}</span>
-    <div className="flex-1">
-      <h3 className="font-bold text-lg text-base-content mb-1">{title}</h3>
-      <p className="text-base-content/50 text-sm leading-relaxed">{desc}</p>
+const MockRequest = () => (
+  <div className="bg-base-100 border border-base-300 rounded-2xl p-5 shadow-2xl w-full max-w-sm">
+    <p className="text-xs font-bold uppercase tracking-widest text-base-content/40 mb-4">Recent Requests</p>
+    {[
+      { name: 'Ahmad S.',  asset: 'Laptop',     status: 'Accepted', color: 'badge-success' },
+      { name: 'Sara K.',   asset: 'Headphones', status: 'Pending',  color: 'badge-warning' },
+      { name: 'James R.',  asset: 'Router',     status: 'Accepted', color: 'badge-success' },
+      { name: 'Priya M.',  asset: 'Monitor',    status: 'Denied',   color: 'badge-error'   },
+    ].map(({ name, asset, status, color }) => (
+      <div key={name} className="flex items-center justify-between py-2.5 border-b border-base-300 last:border-0">
+        <div className="flex items-center gap-3">
+          <div className="w-7 h-7 rounded-full bg-primary/15 flex items-center justify-center text-xs font-bold text-primary">
+            {name[0]}
+          </div>
+          <div>
+            <p className="text-xs font-semibold">{name}</p>
+            <p className="text-xs text-base-content/40">{asset}</p>
+          </div>
+        </div>
+        <span className={`badge badge-xs ${color}`}>{status}</span>
+      </div>
+    ))}
+  </div>
+);
+
+const MockAnalytics = () => (
+  <div className="bg-base-100 border border-base-300 rounded-2xl p-5 shadow-2xl w-full max-w-sm">
+    <p className="text-xs font-bold uppercase tracking-widest text-base-content/40 mb-4">Analytics</p>
+    <div className="flex items-end gap-2 h-24 mb-3">
+      {[40, 65, 45, 80, 55, 90, 70].map((h, i) => (
+        <div key={i} className="flex-1 rounded-t-md bg-primary/20 hover:bg-primary/60 transition-colors"
+          style={{ height: `${h}%` }} />
+      ))}
     </div>
-    <span className="text-base-content/20 group-hover:text-primary group-hover:translate-x-1 transition-all text-xl">→</span>
+    <div className="flex justify-between text-xs text-base-content/30">
+      {['M','T','W','T','F','S','S'].map(d => <span key={d}>{d}</span>)}
+    </div>
+    <div className="mt-4 flex gap-3">
+      <div className="flex-1 bg-primary/10 rounded-xl p-3 text-center">
+        <p className="text-lg font-black text-primary">24</p>
+        <p className="text-xs text-base-content/40">Requests</p>
+      </div>
+      <div className="flex-1 bg-success/10 rounded-xl p-3 text-center">
+        <p className="text-lg font-black text-success">18</p>
+        <p className="text-xs text-base-content/40">Approved</p>
+      </div>
+    </div>
+  </div>
+);
+
+/* ── Feature block — mode.com style two-column ── */
+const FeatureBlock = ({ tag, title, desc, visual, accent, flip }) => (
+  <div className={`rounded-3xl overflow-hidden grid md:grid-cols-2 min-h-[420px] ${accent}`}>
+    <div className={`flex flex-col justify-center p-10 md:p-14 ${flip ? 'md:order-2' : ''}`}>
+      <p className="text-xs uppercase tracking-[0.3em] opacity-50 mb-4 font-semibold">{tag}</p>
+      <h2 className="text-3xl md:text-4xl font-black leading-tight mb-5 whitespace-pre-line">{title}</h2>
+      <p className="text-sm leading-relaxed opacity-60 max-w-xs">{desc}</p>
+    </div>
+    <div className={`flex items-center justify-center p-8 md:p-12 ${flip ? 'md:order-1' : ''}`}>
+      {visual}
+    </div>
   </div>
 );
 
@@ -45,47 +114,58 @@ const Home = () => {
   return (
     <div className="bg-base-100 text-base-content">
 
-      {/* ── HERO ─────────────────────────────────────────────────────────── */}
+      {/* ── HERO ── */}
       <Banner />
 
-      <Divider />
-
-      {/* ── STATS ────────────────────────────────────────────────────────── */}
-      <section className="max-w-5xl mx-auto px-6 py-16">
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-10">
-          <Stat value="100+"   label="Companies trust us"          />
-          <Stat value="99.9%"  label="System reliability"          />
-          <Stat value="1,200+" label="Asset requests processed"     />
+      {/* ── STATS ── */}
+      <section className="border-b border-base-300">
+        <div className="max-w-5xl mx-auto px-6 py-16 grid grid-cols-2 md:grid-cols-3 gap-10">
+          {[
+            { value: '100+',   label: 'Companies trust us'       },
+            { value: '99.9%',  label: 'System reliability'       },
+            { value: '1,200+', label: 'Asset requests processed' },
+          ].map(({ value, label }) => (
+            <div key={label} className="flex flex-col gap-1">
+              <span className="text-5xl md:text-6xl font-black tracking-tight text-base-content">{value}</span>
+              <span className="text-xs text-base-content/40 uppercase tracking-widest">{label}</span>
+            </div>
+          ))}
         </div>
+      </section>
+
+      {/* ── FEATURE BLOCKS — mode.com style ── */}
+      <section className="max-w-6xl mx-auto px-6 py-16 flex flex-col gap-5">
+
+        <FeatureBlock
+          tag="Asset Tracking"
+          title={"Built for\nyour HR team"}
+          desc="Monitor every asset from procurement to disposal. Full lifecycle visibility with real-time stock levels and assignment history."
+          accent="bg-[#e7f0ff] dark:bg-[#1c2b3a] text-base-content border border-[#c5d9f7] dark:border-[#2d4a6b]"
+          visual={<MockDashboard />}
+        />
+
+        <FeatureBlock
+          flip
+          tag="Request Workflows"
+          title={"And the teams\nyou work with"}
+          desc="Employees request assets, HR approves — all tracked in real time. No emails, no follow-ups, no confusion."
+          accent="bg-[#f0ebff] dark:bg-[#251e3a] text-base-content border border-[#d4c5f7] dark:border-[#4a3a6b]"
+          visual={<MockRequest />}
+        />
+
+        <FeatureBlock
+          tag="Analytics"
+          title={"Real-time\ninsights"}
+          desc="Instant charts on asset distribution, request trends, and team utilization. Make data-driven decisions every day."
+          accent="bg-[#e6f9ee] dark:bg-[#1a2e22] text-base-content border border-[#b7e8c8] dark:border-[#2d5c3e]"
+          visual={<MockAnalytics />}
+        />
+
       </section>
 
       <Divider />
 
-      {/* ── FEATURES ─────────────────────────────────────────────────────── */}
-      <section className="max-w-5xl mx-auto px-6 py-16">
-        <div className="flex items-end justify-between mb-2">
-          <p className="text-xs uppercase tracking-[0.3em] text-base-content/40">What we offer</p>
-        </div>
-        <h2 className="text-3xl md:text-4xl font-black mb-8 tracking-tight">
-          Everything you need<br />to run asset ops.
-        </h2>
-        <div>
-          <FeatureRow num="01" title="Comprehensive Asset Tracking"
-            desc="Monitor every asset from procurement to disposal with complete lifecycle visibility." />
-          <FeatureRow num="02" title="Role-Based Access"
-            desc="HR managers and employees each get a tailored dashboard with the right permissions." />
-          <FeatureRow num="03" title="Request & Approval Workflows"
-            desc="Employees request assets, HR approves — all tracked in real time with status updates." />
-          <FeatureRow num="04" title="Real-time Analytics"
-            desc="Instant charts on asset distribution, request trends, and team utilization." />
-          <FeatureRow num="05" title="Secure & Scalable"
-            desc="Role-based auth, encrypted data, built to scale from 5 to 5,000 employees." />
-        </div>
-      </section>
-
-      <Divider />
-
-      {/* ── CATEGORIES ───────────────────────────────────────────────────── */}
+      {/* ── CATEGORIES ── */}
       <section className="max-w-5xl mx-auto px-6 py-16">
         <p className="text-xs uppercase tracking-[0.3em] text-base-content/40 mb-3">Browse by category</p>
         <h2 className="text-3xl md:text-4xl font-black mb-8 tracking-tight">Asset categories</h2>
@@ -100,26 +180,22 @@ const Home = () => {
 
       <Divider />
 
-      {/* ── PACKAGES ─────────────────────────────────────────────────────── */}
+      {/* ── PACKAGES ── */}
       <section className="max-w-5xl mx-auto px-6 py-16">
         <p className="text-xs uppercase tracking-[0.3em] text-base-content/40 mb-3">Pricing</p>
         <h2 className="text-3xl md:text-4xl font-black mb-10 tracking-tight">Simple plans,<br />no surprises.</h2>
-        <Suspense fallback={
-          <div className="flex justify-center py-12">
-            <span className="loading loading-spinner loading-lg text-primary" />
-          </div>
-        }>
+        <Suspense fallback={<div className="flex justify-center py-12"><span className="loading loading-spinner loading-lg text-primary" /></div>}>
           <Pacages pacagePromise={pacagePromise} />
         </Suspense>
       </section>
 
       <Divider />
 
-      {/* ── TESTIMONIALS ─────────────────────────────────────────────────── */}
+      {/* ── TESTIMONIALS ── */}
       <section className="max-w-5xl mx-auto px-6 py-16">
         <p className="text-xs uppercase tracking-[0.3em] text-base-content/40 mb-3">Testimonials</p>
         <h2 className="text-3xl md:text-4xl font-black mb-10 tracking-tight">What people say.</h2>
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-2 gap-5">
           {[
             { quote: '"AssetVerse reduced our asset tracking workload drastically. The dashboard gives us instant visibility and control."', name: 'HR Manager', role: 'Human Resources', init: 'HR', color: 'bg-primary/15 text-primary' },
             { quote: '"Requesting assets is now transparent and fast. I always know the status of my requests without following up."',       name: 'Employee',   role: 'Team Member',      init: 'EM', color: 'bg-success/15 text-success' },
@@ -140,17 +216,17 @@ const Home = () => {
 
       <Divider />
 
-      {/* ── FAQ ──────────────────────────────────────────────────────────── */}
+      {/* ── FAQ ── */}
       <section className="max-w-5xl mx-auto px-6 py-16">
         <FAQSection />
       </section>
 
       <Divider />
 
-      {/* ── CTA ──────────────────────────────────────────────────────────── */}
+      {/* ── CTA ── */}
       <section className="max-w-5xl mx-auto px-6 py-24 text-center">
         <p className="text-xs uppercase tracking-[0.3em] text-base-content/40 mb-4">Get started today</p>
-        <h2 className="text-4xl md:text-6xl font-black tracking-tight mb-6 text-base-content">
+        <h2 className="text-4xl md:text-6xl font-black tracking-tight mb-6">
           Ready to manage<br />assets smarter?
         </h2>
         <p className="text-base-content/40 mb-10 max-w-md mx-auto">
