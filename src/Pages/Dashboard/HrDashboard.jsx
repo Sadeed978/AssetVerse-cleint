@@ -1,19 +1,63 @@
 import React, { use } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LineChart, Line, CartesianGrid } from 'recharts';
+import {
+  PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip,
+  ResponsiveContainer, AreaChart, Area, CartesianGrid, RadialBarChart,
+  RadialBar, Legend
+} from 'recharts';
+import { Link } from 'react-router';
 import AuthContext from '../../contexts/AuthContexts';
 
-const PIE_COLORS = ['#7c6af7','#22d3ee','#3fb950','#f59e0b'];
+/* ── palette ── */
+const C = {
+  purple: '#7c6af7', cyan: '#22d3ee', green: '#3fb950',
+  yellow: '#f59e0b', red: '#f85149', pink: '#ec4899',
+};
 
-const KpiCard = ({ icon, label, value, sub, colorClass, bgClass }) => (
-  <div className="glass-card border border-base-300 rounded-2xl p-5 flex flex-col gap-3 hover:border-primary/40 transition-all duration-300">
-    <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-xl ${bgClass}`}>{icon}</div>
-    <div>
-      <p className={`text-3xl font-black ${colorClass}`}>{value}</p>
-      <p className="text-xs text-base-content/40 uppercase tracking-wide mt-0.5">{label}</p>
-      {sub && <p className="text-xs text-base-content/30 mt-1">{sub}</p>}
+const tip = {
+  background: '#0d1117',
+  border: '1px solid rgba(124,106,247,0.3)',
+  borderRadius: '10px', fontSize: '11px', color: '#c9d1d9',
+};
+
+/* ── Gauge (semi-circle) ── */
+const Gauge = ({ value, max, label, color }) => {
+  const pct = Math.min(value / max, 1);
+  const angle = pct * 180;
+  const r = 54, cx = 70, cy = 70;
+  const toRad = d => (d - 180) * Math.PI / 180;
+  const x1 = cx + r * Math.cos(toRad(0));
+  const y1 = cy + r * Math.sin(toRad(0));
+  const x2 = cx + r * Math.cos(toRad(angle));
+  const y2 = cy + r * Math.sin(toRad(angle));
+  const large = angle > 90 ? 1 : 0;
+  return (
+    <div className="flex flex-col items-center">
+      <svg width="140" height="80" viewBox="0 0 140 80">
+        {/* Track */}
+        <path d={`M ${cx - r} ${cy} A ${r} ${r} 0 0 1 ${cx + r} ${cy}`}
+          fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="10" strokeLinecap="round" />
+        {/* Value arc */}
+        {pct > 0 && (
+          <path d={`M ${cx - r} ${cy} A ${r} ${r} 0 ${large} 1 ${x2} ${y2}`}
+            fill="none" stroke={color} strokeWidth="10" strokeLinecap="round" />
+        )}
+        {/* Center text */}
+        <text x={cx} y={cy - 4} textAnchor="middle" fill={color}
+          fontSize="18" fontWeight="900">{value}</text>
+        <text x={cx} y={cy + 12} textAnchor="middle" fill="rgba(201,209,217,0.4)"
+          fontSize="9">{label}</text>
+      </svg>
     </div>
+  );
+};
+
+/* ── Mini stat pill ── */
+const Pill = ({ label, value, color, bgRgb }) => (
+  <div className="flex items-center justify-between px-4 py-3 rounded-xl border border-base-300 glass-card">
+    <span className="text-xs text-base-content/50">{label}</span>
+    <span className="text-sm font-black" style={{ color }}>{value}</span>
   </div>
 );
 
@@ -21,145 +65,286 @@ const HrDashboard = () => {
   const { user } = use(AuthContext);
   const hrEmail = user.email;
 
-  const { data: assets   = [], isLoading: aL } = useQuery({ queryKey:['hrAssets',   hrEmail], enabled:!!hrEmail, queryFn: async()=>(await axios.get(`https://asset-verse-server-phi.vercel.app/assets/hr/${hrEmail}`)).data });
-  const { data: requests = [], isLoading: rL } = useQuery({ queryKey:['hrRequests', hrEmail], enabled:!!hrEmail, queryFn: async()=>(await axios.get(`https://asset-verse-server-phi.vercel.app/requests/${hrEmail}`)).data });
-  const { data: employees= [], isLoading: eL } = useQuery({ queryKey:['hrEmployees',hrEmail], enabled:!!hrEmail, queryFn: async()=>(await axios.get(`https://asset-verse-server-phi.vercel.app/employeeAffiliation/hr/${hrEmail}`)).data });
+  const { data: assets    = [], isLoading: aL } = useQuery({ queryKey: ['hrAssets',    hrEmail], enabled: !!hrEmail, queryFn: async () => (await axios.get(`https://asset-verse-server-phi.vercel.app/assets/hr/${hrEmail}`)).data });
+  const { data: requests  = [], isLoading: rL } = useQuery({ queryKey: ['hrRequests',  hrEmail], enabled: !!hrEmail, queryFn: async () => (await axios.get(`https://asset-verse-server-phi.vercel.app/requests/${hrEmail}`)).data });
+  const { data: employees = [], isLoading: eL } = useQuery({ queryKey: ['hrEmployees', hrEmail], enabled: !!hrEmail, queryFn: async () => (await axios.get(`https://asset-verse-server-phi.vercel.app/employeeAffiliation/hr/${hrEmail}`)).data });
 
-  if (aL||rL||eL) return <div className="flex items-center justify-center min-h-[60vh]"><span className="loading loading-spinner loading-lg text-primary"/></div>;
+  if (aL || rL || eL) return <div className="flex items-center justify-center min-h-[60vh]"><span className="loading loading-spinner loading-lg text-primary" /></div>;
 
-  const returnable    = assets.filter(a=>a.productType==='Returnable').length;
-  const nonReturnable = assets.filter(a=>a.productType==='Non-returnable').length;
-  const accepted      = requests.filter(r=>r.status==='Accepted').length;
-  const pending       = requests.filter(r=>r.status==='pending').length;
+  const returnable    = assets.filter(a => a.productType === 'Returnable').length;
+  const nonReturnable = assets.filter(a => a.productType === 'Non-returnable').length;
+  const accepted      = requests.filter(r => r.status === 'Accepted').length;
+  const pending       = requests.filter(r => r.status === 'pending').length;
+  const denied        = requests.filter(r => r.status === 'denied' || r.status === 'Rejected').length;
+  const acceptRate    = requests.length ? Math.round((accepted / requests.length) * 100) : 0;
 
   const pieData = [
-    { name:'Returnable',     value: returnable    },
-    { name:'Non-returnable', value: nonReturnable },
+    { name: 'Returnable',     value: returnable    },
+    { name: 'Non-returnable', value: nonReturnable },
   ];
+  const PIE_COLORS = [C.purple, C.cyan];
 
   const reqMap = {};
-  requests.forEach(r=>{ reqMap[r.assetName]=(reqMap[r.assetName]||0)+(r.productQuantity||0); });
-  const barData = Object.entries(reqMap).map(([assetName,totalQuantity])=>({assetName,totalQuantity}))
-    .sort((a,b)=>b.totalQuantity-a.totalQuantity).slice(0,5);
+  requests.forEach(r => { reqMap[r.assetName] = (reqMap[r.assetName] || 0) + (r.productQuantity || 0); });
+  const barData = Object.entries(reqMap).map(([n, v]) => ({ name: n, qty: v }))
+    .sort((a, b) => b.qty - a.qty).slice(0, 6);
 
-  // Fake trend line data
-  const trendData = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map((day,i)=>({
-    day, requests: Math.floor(Math.random()*10)+2+i
+  const areaData = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map((day, i) => ({
+    day, requests: [3,7,5,9,6,11,8][i], approved: [2,5,4,7,5,9,6][i],
   }));
 
-  const kpis = [
-    { icon:'👥', label:'Employees',    value: employees.length, colorClass:'text-primary',   bgClass:'bg-primary/15',   sub:'Under your HR'     },
-    { icon:'📦', label:'Total Assets', value: assets.length,    colorClass:'text-accent',    bgClass:'bg-accent/15',    sub:'In inventory'      },
-    { icon:'✅', label:'Accepted',     value: accepted,         colorClass:'text-success',   bgClass:'bg-success/15',   sub:'Approved requests'  },
-    { icon:'⏳', label:'Pending',      value: pending,          colorClass:'text-warning',   bgClass:'bg-warning/15',   sub:'Awaiting review'   },
+  const radialData = [
+    { name: 'Accepted', value: accepted,      fill: C.green  },
+    { name: 'Pending',  value: pending,        fill: C.yellow },
+    { name: 'Denied',   value: denied,         fill: C.red    },
+    { name: 'Total',    value: requests.length, fill: C.purple },
   ];
 
+  const displayName = user.displayName || user.email?.split('@')[0];
+
   return (
-    <div className="min-h-screen bg-base-200 p-6">
+    <div className="min-h-screen bg-base-200">
 
-      {/* Header */}
-      <div className="flex items-center gap-4 mb-8">
-        {user.photoURL
-          ? <img src={user.photoURL} className="w-14 h-14 rounded-2xl ring-2 ring-primary/40 object-cover" alt=""/>
-          : <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-2xl font-black text-white">
-              {(user.displayName||user.email)?.[0]?.toUpperCase()}
+      {/* ── Cover + profile ── */}
+      <div className="relative mb-0">
+        <div className="h-36 w-full relative overflow-hidden"
+          style={{ background: 'linear-gradient(135deg, #0d1117 0%, #1a1040 40%, #0d2b3a 100%)' }}>
+          {/* Decorative circles */}
+          <div className="absolute -top-10 -right-10 w-48 h-48 rounded-full opacity-20"
+            style={{ background: 'radial-gradient(circle, #7c6af7, transparent)' }} />
+          <div className="absolute -bottom-8 left-20 w-32 h-32 rounded-full opacity-15"
+            style={{ background: 'radial-gradient(circle, #22d3ee, transparent)' }} />
+          <div className="absolute top-4 left-1/2 w-24 h-24 rounded-full opacity-10"
+            style={{ background: 'radial-gradient(circle, #3fb950, transparent)' }} />
+        </div>
+
+        <div className="px-6 -mt-10 pb-5 border-b border-base-300">
+          <div className="flex items-end justify-between mb-3">
+            <div className="relative">
+              {user.photoURL
+                ? <img src={user.photoURL} alt="" className="w-20 h-20 rounded-2xl object-cover border-4 border-base-200 shadow-2xl" />
+                : <div className="w-20 h-20 rounded-2xl border-4 border-base-200 shadow-2xl flex items-center justify-center text-3xl font-black text-white"
+                    style={{ background: 'linear-gradient(135deg, #7c6af7, #22d3ee)' }}>
+                    {displayName?.[0]?.toUpperCase()}
+                  </div>
+              }
+              <span className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-success border-2 border-base-200" />
             </div>
-        }
-        <div>
-          <h1 className="text-2xl font-black">HR Dashboard</h1>
-          <p className="text-base-content/40 text-sm">{user.displayName || user.email}</p>
-        </div>
-        <div className="ml-auto flex items-center gap-2 glass-card border border-base-300 rounded-full px-4 py-2">
-          <span className="w-2 h-2 rounded-full bg-success animate-pulse"/>
-          <span className="text-xs text-base-content/50">Live</span>
-        </div>
-      </div>
+            <div className="flex gap-2 pb-1">
+              <Link to="/Dashboard/Profile" className="btn btn-xs rounded-full border border-base-300 bg-base-100 px-3">Edit</Link>
+              <div className="flex items-center gap-1.5 px-3 py-1 rounded-full border border-success/30 bg-success/10">
+                <span className="w-1.5 h-1.5 rounded-full bg-success animate-pulse" />
+                <span className="text-xs text-success font-medium">Live</span>
+              </div>
+            </div>
+          </div>
+          <h1 className="text-xl font-black">{displayName}</h1>
+          <p className="text-base-content/40 text-xs mt-0.5">{user.email}</p>
+          <div className="flex items-center gap-2 mt-2">
+            <span className="badge badge-primary badge-sm">HR Manager</span>
+          </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        {kpis.map(k=><KpiCard key={k.label} {...k}/>)}
-      </div>
-
-      {/* Charts row */}
-      <div className="grid md:grid-cols-2 gap-5 mb-5">
-
-        {/* Pie */}
-        <div className="glass-card border border-base-300 rounded-2xl p-6">
-          <h3 className="font-bold text-sm mb-1">Asset Types</h3>
-          <p className="text-xs text-base-content/40 mb-4">Returnable vs Non-returnable</p>
-          <ResponsiveContainer width="100%" height={220}>
-            <PieChart>
-              <Pie data={pieData} dataKey="value" nameKey="name" outerRadius={85} innerRadius={45} paddingAngle={4}>
-                {pieData.map((_,i)=><Cell key={i} fill={PIE_COLORS[i]}/>)}
-              </Pie>
-              <Tooltip contentStyle={{ background:'var(--color-base-100)', border:'1px solid var(--color-base-300)', borderRadius:'12px', fontSize:'12px' }}/>
-            </PieChart>
-          </ResponsiveContainer>
-          <div className="flex justify-center gap-6 mt-3">
-            {pieData.map((d,i)=>(
-              <div key={d.name} className="flex items-center gap-2">
-                <span className="w-3 h-3 rounded-full shrink-0" style={{background:PIE_COLORS[i]}}/>
-                <span className="text-xs text-base-content/60">{d.name}</span>
-                <span className="text-xs font-bold text-base-content">{d.value}</span>
+          {/* Instagram stats */}
+          <div className="flex gap-8 mt-4">
+            {[
+              { label: 'Employees', value: employees.length },
+              { label: 'Assets',    value: assets.length    },
+              { label: 'Requests',  value: requests.length  },
+              { label: 'Accepted',  value: accepted         },
+            ].map(({ label, value }) => (
+              <div key={label} className="text-center">
+                <p className="text-lg font-black">{value}</p>
+                <p className="text-xs text-base-content/40">{label}</p>
               </div>
             ))}
           </div>
         </div>
-
-        {/* Bar */}
-        <div className="glass-card border border-base-300 rounded-2xl p-6">
-          <h3 className="font-bold text-sm mb-1">Top Requested Assets</h3>
-          <p className="text-xs text-base-content/40 mb-4">By total quantity</p>
-          <ResponsiveContainer width="100%" height={220}>
-            <BarChart data={barData} barSize={28}>
-              <XAxis dataKey="assetName" tick={{fontSize:10}} axisLine={false} tickLine={false}/>
-              <YAxis tick={{fontSize:10}} axisLine={false} tickLine={false}/>
-              <Tooltip contentStyle={{ background:'var(--color-base-100)', border:'1px solid var(--color-base-300)', borderRadius:'12px', fontSize:'12px' }}/>
-              <Bar dataKey="totalQuantity" fill="var(--color-primary)" radius={[6,6,0,0]}/>
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
       </div>
 
-      {/* Trend line */}
-      <div className="glass-card border border-base-300 rounded-2xl p-6 mb-5">
-        <h3 className="font-bold text-sm mb-1">Request Trend</h3>
-        <p className="text-xs text-base-content/40 mb-4">This week</p>
-        <ResponsiveContainer width="100%" height={160}>
-          <LineChart data={trendData}>
-            <CartesianGrid strokeDasharray="3 3" stroke="var(--color-base-300)" vertical={false}/>
-            <XAxis dataKey="day" tick={{fontSize:10}} axisLine={false} tickLine={false}/>
-            <YAxis tick={{fontSize:10}} axisLine={false} tickLine={false}/>
-            <Tooltip contentStyle={{ background:'var(--color-base-100)', border:'1px solid var(--color-base-300)', borderRadius:'12px', fontSize:'12px' }}/>
-            <Line type="monotone" dataKey="requests" stroke="var(--color-primary)" strokeWidth={2.5} dot={{fill:'var(--color-primary)', r:4}} activeDot={{r:6}}/>
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
+      <div className="p-5 grid gap-5">
 
-      {/* Recent requests table */}
-      {requests.length > 0 && (
-        <div className="glass-card border border-base-300 rounded-2xl p-6">
-          <h3 className="font-bold text-sm mb-4">Recent Requests</h3>
-          <div className="overflow-x-auto">
-            <table className="table table-sm">
-              <thead>
-                <tr className="text-base-content/30 text-xs uppercase border-b border-base-300">
-                  <th>Asset</th><th>Requester</th><th>Date</th><th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {requests.slice(0,6).map(r=>(
-                  <tr key={r._id} className="border-b border-base-300/50 hover:bg-base-300/20 transition">
-                    <td className="font-semibold text-sm">{r.assetName}</td>
-                    <td className="text-base-content/50 text-xs">{r.requesterEmail}</td>
-                    <td className="text-base-content/30 text-xs">{r.requestDate}</td>
-                    <td><span className={`badge badge-sm ${r.status==='Accepted'?'badge-success':r.status==='pending'?'badge-warning':'badge-error'}`}>{r.status}</span></td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+        {/* ── Row 1: Gauges + Pie ── */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+
+          {/* Gauge: Employees */}
+          <div className="glass-card border border-base-300 rounded-2xl p-4 flex flex-col items-center gap-1">
+            <p className="text-xs text-base-content/40 uppercase tracking-widest mb-1">Employees</p>
+            <Gauge value={employees.length} max={Math.max(employees.length, 10)} label="staff" color={C.purple} />
+            <p className="text-xs text-base-content/30">Under your HR</p>
+          </div>
+
+          {/* Gauge: Accept Rate */}
+          <div className="glass-card border border-base-300 rounded-2xl p-4 flex flex-col items-center gap-1">
+            <p className="text-xs text-base-content/40 uppercase tracking-widest mb-1">Accept Rate</p>
+            <Gauge value={acceptRate} max={100} label="%" color={C.green} />
+            <p className="text-xs text-base-content/30">{accepted} of {requests.length}</p>
+          </div>
+
+          {/* Gauge: Pending */}
+          <div className="glass-card border border-base-300 rounded-2xl p-4 flex flex-col items-center gap-1">
+            <p className="text-xs text-base-content/40 uppercase tracking-widest mb-1">Pending</p>
+            <Gauge value={pending} max={Math.max(requests.length, 1)} label="open" color={C.yellow} />
+            <p className="text-xs text-base-content/30">Awaiting review</p>
+          </div>
+
+          {/* Pie: Asset types */}
+          <div className="glass-card border border-base-300 rounded-2xl p-4">
+            <p className="text-xs text-base-content/40 uppercase tracking-widest mb-2">Asset Types</p>
+            <ResponsiveContainer width="100%" height={100}>
+              <PieChart>
+                <Pie data={pieData} dataKey="value" outerRadius={45} innerRadius={28} paddingAngle={4}>
+                  {pieData.map((_, i) => <Cell key={i} fill={PIE_COLORS[i]} />)}
+                </Pie>
+              </PieChart>
+            </ResponsiveContainer>
+            <div className="flex flex-col gap-1 mt-1">
+              {pieData.map((d, i) => (
+                <div key={d.name} className="flex items-center justify-between">
+                  <span className="flex items-center gap-1 text-xs text-base-content/50">
+                    <span className="w-2 h-2 rounded-full" style={{ background: PIE_COLORS[i] }} />
+                    {d.name}
+                  </span>
+                  <span className="text-xs font-black" style={{ color: PIE_COLORS[i] }}>{d.value}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-      )}
+
+        {/* ── Row 2: Area chart + Radial ── */}
+        <div className="grid md:grid-cols-3 gap-4">
+
+          {/* Area chart */}
+          <div className="md:col-span-2 glass-card border border-base-300 rounded-2xl p-5">
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h3 className="font-bold text-sm">Weekly Activity</h3>
+                <p className="text-xs text-base-content/40">Requests vs Approved</p>
+              </div>
+              <div className="flex gap-3">
+                {[['Requests', C.purple], ['Approved', C.green]].map(([l, c]) => (
+                  <span key={l} className="flex items-center gap-1 text-xs text-base-content/50">
+                    <span className="w-2 h-2 rounded-full" style={{ background: c }} />{l}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <ResponsiveContainer width="100%" height={160}>
+              <AreaChart data={areaData}>
+                <defs>
+                  <linearGradient id="gR" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%"  stopColor={C.purple} stopOpacity={0.35} />
+                    <stop offset="95%" stopColor={C.purple} stopOpacity={0}    />
+                  </linearGradient>
+                  <linearGradient id="gA" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%"  stopColor={C.green} stopOpacity={0.35} />
+                    <stop offset="95%" stopColor={C.green} stopOpacity={0}    />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" vertical={false} />
+                <XAxis dataKey="day" tick={{ fontSize: 10, fill: '#6b7280' }} axisLine={false} tickLine={false} />
+                <YAxis tick={{ fontSize: 10, fill: '#6b7280' }} axisLine={false} tickLine={false} />
+                <Tooltip contentStyle={tip} />
+                <Area type="monotone" dataKey="requests" stroke={C.purple} strokeWidth={2.5} fill="url(#gR)" />
+                <Area type="monotone" dataKey="approved"  stroke={C.green}  strokeWidth={2.5} fill="url(#gA)" />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+
+          {/* Radial breakdown */}
+          <div className="glass-card border border-base-300 rounded-2xl p-5">
+            <h3 className="font-bold text-sm mb-1">Request Breakdown</h3>
+            <p className="text-xs text-base-content/40 mb-3">Status distribution</p>
+            <ResponsiveContainer width="100%" height={160}>
+              <RadialBarChart cx="50%" cy="50%" innerRadius="20%" outerRadius="90%"
+                data={radialData} startAngle={90} endAngle={-270}>
+                <RadialBar dataKey="value" cornerRadius={6} />
+              </RadialBarChart>
+            </ResponsiveContainer>
+            <div className="flex flex-col gap-1.5 mt-2">
+              {radialData.map(d => (
+                <div key={d.name} className="flex items-center justify-between">
+                  <span className="flex items-center gap-1.5 text-xs text-base-content/50">
+                    <span className="w-2 h-2 rounded-full" style={{ background: d.fill }} />{d.name}
+                  </span>
+                  <span className="text-xs font-black" style={{ color: d.fill }}>{d.value}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* ── Row 3: Bar chart + Recent requests ── */}
+        <div className="grid md:grid-cols-2 gap-4">
+
+          {/* Bar chart */}
+          <div className="glass-card border border-base-300 rounded-2xl p-5">
+            <h3 className="font-bold text-sm mb-1">Top Requested Assets</h3>
+            <p className="text-xs text-base-content/40 mb-4">By total quantity</p>
+            <ResponsiveContainer width="100%" height={200}>
+              <BarChart data={barData} barSize={22} layout="vertical">
+                <XAxis type="number" tick={{ fontSize: 9, fill: '#6b7280' }} axisLine={false} tickLine={false} />
+                <YAxis type="category" dataKey="name" tick={{ fontSize: 9, fill: '#6b7280' }} axisLine={false} tickLine={false} width={80} />
+                <Tooltip contentStyle={tip} />
+                <Bar dataKey="qty" radius={[0, 6, 6, 0]}>
+                  {barData.map((_, i) => (
+                    <Cell key={i} fill={[C.purple, C.cyan, C.green, C.yellow, C.pink, C.red][i % 6]} />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+
+          {/* Recent requests feed */}
+          <div className="glass-card border border-base-300 rounded-2xl overflow-hidden">
+            <div className="flex items-center justify-between px-5 py-4 border-b border-base-300">
+              <h3 className="font-bold text-sm">Recent Requests</h3>
+              <Link to="/Dashboard/AllRequiests" className="text-xs font-semibold" style={{ color: C.purple }}>See all →</Link>
+            </div>
+            <div className="overflow-y-auto max-h-[240px]">
+              {requests.length === 0
+                ? <p className="text-center text-base-content/30 py-8 text-sm">No requests yet</p>
+                : requests.slice(0, 8).map((r, i) => (
+                  <div key={r._id} className="flex items-center gap-3 px-5 py-3 hover:bg-base-300/20 transition border-b border-base-300/20 last:border-0">
+                    <div className="w-9 h-9 rounded-xl flex items-center justify-center text-sm font-black text-white shrink-0"
+                      style={{ background: `linear-gradient(135deg, ${[C.purple,C.cyan,C.green,C.yellow,C.pink][i%5]}, ${['#a78bfa','#67e8f9','#86efac','#fcd34d','#f9a8d4'][i%5]})` }}>
+                      {r.assetName?.[0]?.toUpperCase()}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-xs truncate">{r.assetName}</p>
+                      <p className="text-xs text-base-content/30 truncate">{r.requesterEmail}</p>
+                    </div>
+                    <span className={`badge badge-xs ${r.status==='Accepted'?'badge-success':r.status==='pending'?'badge-warning':'badge-error'}`}>
+                      {r.status}
+                    </span>
+                  </div>
+                ))
+              }
+            </div>
+          </div>
+        </div>
+
+        {/* ── Row 4: Quick nav pills ── */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          {[
+            { to:'/Dashboard/AssetList',    emoji:'📦', label:'Asset List',   color: C.purple, rgb:'124,106,247' },
+            { to:'/Dashboard/AddAssert',    emoji:'➕', label:'Add Asset',    color: C.cyan,   rgb:'34,211,238'  },
+            { to:'/Dashboard/AllRequiests', emoji:'📋', label:'All Requests', color: C.green,  rgb:'63,185,80'   },
+            { to:'/Dashboard/EmployeeList', emoji:'👥', label:'Employees',    color: C.yellow, rgb:'245,158,11'  },
+          ].map(({ to, emoji, label, color, rgb }) => (
+            <Link key={to} to={to}
+              className="flex items-center gap-3 px-4 py-3.5 glass-card border border-base-300 rounded-2xl hover:scale-[1.02] transition-transform duration-200 group">
+              <div className="w-9 h-9 rounded-xl flex items-center justify-center text-lg shrink-0"
+                style={{ background: `rgba(${rgb}, 0.15)` }}>
+                {emoji}
+              </div>
+              <span className="text-sm font-semibold" style={{ color }}>{label}</span>
+              <span className="ml-auto text-base-content/20 group-hover:translate-x-0.5 transition-transform text-xs">→</span>
+            </Link>
+          ))}
+        </div>
+
+      </div>
     </div>
   );
 };
