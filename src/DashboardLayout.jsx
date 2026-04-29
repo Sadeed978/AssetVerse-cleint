@@ -9,16 +9,19 @@ const DashboardLayout = () => {
   const { user, LogingOut, setUser } = use(AuthContext);
   const [role, setRole] = useState(null);
   const [collapsed, setCollapsed] = useState(false);
+  const [dbName, setDbName] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
     if (user) {
       fetch(`https://asset-verse-server-phi.vercel.app/users/${user?.email}`)
         .then(r => r.json())
-        .then(d => setRole(d.role))
+        .then(d => { setRole(d.role); setDbName(d.displayName || ''); })
         .catch(console.error);
     }
   }, [user]);
+
+  const displayName = user?.displayName || dbName || user?.email?.split('@')[0] || 'User';
 
   const handleLogout = () => {
     LogingOut().then(() => { setUser(null); toast.success('Logged out'); navigate('/'); });
@@ -67,7 +70,7 @@ const DashboardLayout = () => {
                 </div>
             }
             <div className="overflow-hidden">
-              <p className="font-semibold text-sm truncate">{user.displayName || 'User'}</p>
+              <p className="font-semibold text-sm truncate">{displayName}</p>
               <span className={`badge badge-xs ${role === 'hr' ? 'badge-primary' : 'badge-secondary'} capitalize`}>{role || '…'}</span>
             </div>
           </div>

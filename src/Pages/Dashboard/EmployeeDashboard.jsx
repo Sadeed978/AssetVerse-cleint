@@ -8,6 +8,15 @@ const EmployeeDashboard = () => {
   const { user } = use(AuthContext);
   const userEmail = user.email;
 
+  // Fetch full profile to get displayName stored in DB
+  const { data: dbProfile } = useQuery({
+    queryKey: ['empDbProfile', userEmail], enabled: !!userEmail,
+    queryFn: async () => (await axios.get(`https://asset-verse-server-phi.vercel.app/users/${userEmail}`)).data,
+  });
+
+  // Resolve display name: Firebase auth > DB > email prefix
+  const displayName = user.displayName || dbProfile?.displayName || userEmail?.split('@')[0] || 'Employee';
+
   const { data: affiliation, isLoading: affL } = useQuery({
     queryKey: ['affiliation', userEmail], enabled: !!userEmail, retry: false,
     queryFn: async () => (await axios.get(`https://asset-verse-server-phi.vercel.app/employeeAffiliation/${userEmail}`)).data,
@@ -44,7 +53,7 @@ const EmployeeDashboard = () => {
               {(user.displayName || user.email)?.[0]?.toUpperCase()}
             </div>
         }
-        <h2 className="text-2xl font-extrabold mb-1">Hey, {user.displayName?.split(' ')[0] || 'there'} 👋</h2>
+        <h2 className="text-2xl font-extrabold mb-1">Hey, {displayName.split(' ')[0]} 👋</h2>
         <span className="badge badge-secondary mb-4">Employee</span>
         <p className="text-base-content/50 text-sm mb-6">
           You're not affiliated with a company yet. Your HR manager needs to add you to their team.
@@ -83,7 +92,7 @@ const EmployeeDashboard = () => {
               </div>
           }
           <div>
-            <h1 className="text-xl font-extrabold">{user.displayName || 'Employee'}</h1>
+            <h1 className="text-xl font-extrabold">{displayName}</h1>
             <p className="text-base-content/50 text-sm">{user.email}</p>
             <div className="flex items-center gap-2 mt-1">
               <span className="badge badge-secondary badge-sm">Employee</span>
