@@ -1,8 +1,8 @@
 import React, { Suspense } from 'react';
 import { Link, useNavigate } from 'react-router';
+import Banner from '../Component/Banner';
 import Pacages from '../Component/Pacages';
 import FAQSection from '../Component/ExtraPart/Faq2';
-import { useNavigate as useNav } from 'react-router';
 
 const pacagePromise = fetch('https://asset-verse-server-phi.vercel.app/pacages').then(r => r.json());
 
@@ -46,29 +46,7 @@ const Home = () => {
     <div className="bg-base-100 text-base-content">
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
-      <section className="max-w-5xl mx-auto px-6 pt-24 pb-20">
-        <p className="text-xs uppercase tracking-[0.3em] text-primary mb-6 font-medium">
-          Asset Management Platform
-        </p>
-        <h1 className="text-5xl md:text-7xl font-black leading-[1.05] tracking-tight mb-8 text-base-content">
-          Manage assets.<br />
-          <span className="text-base-content/30">Smarter.</span>
-        </h1>
-        <p className="text-base-content/50 text-lg md:text-xl max-w-xl leading-relaxed mb-10">
-          AssetVerse helps organizations track, allocate, and manage company
-          assets — with full visibility for HR and employees.
-        </p>
-        <div className="flex flex-wrap gap-3">
-          <button onClick={() => navigate('/HRRegister')}
-            className="btn btn-primary rounded-full px-8 text-base">
-            Get Started →
-          </button>
-          <button onClick={() => navigate('/Login')}
-            className="btn btn-ghost rounded-full px-8 text-base border border-base-300 hover:border-primary">
-            Sign In
-          </button>
-        </div>
-      </section>
+      <Banner />
 
       <Divider />
 
